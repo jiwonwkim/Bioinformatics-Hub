@@ -29,9 +29,9 @@
 
 ## UCL Research Computing
 
-* [Understanding Myriad Structure](ucl-research-computing/understanding-myriad-structure.md)
 * [Writing job script](ucl-research-computing/writing-job-script.md)
 * [Interactive sessions](ucl-research-computing/interactive-sessions.md)
+* [Understanding Myriad Structure](ucl-research-computing/understanding-myriad-structure.md)
 
 ## Running Nextflow
 
@@ -71,6 +71,10 @@
 * [Oxford Nanopore methylation calls #0: Introduction](epigenomics/oxford-nanopore-methylation-calls-0-introduction/README.md)
   * [Oxford Nanopore methylation calls #1: nf-core/methylong](epigenomics/oxford-nanopore-methylation-calls-0-introduction/oxford-nanopore-methylation-calls-1-nf-core-methylong.md)
   * [Oxford Nanopore methylation calls #2: Methylation site annotation](epigenomics/oxford-nanopore-methylation-calls-0-introduction/oxford-nanopore-methylation-calls-2-methylation-site-annotation.md)
+
+## Workshops
+
+* [Aristotle: Bioinformatics workshop taster](workshops/aristotle-bioinformatics-workshop-taster.md)
 
 ## Useful Links
 
