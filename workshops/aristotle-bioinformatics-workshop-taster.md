@@ -20,7 +20,7 @@ In this session, we are going to learn:
 
 A **remote server** is a powerful computer located elsewhere that you can access over the internet. It has lots of storage and processing power, so it can handle big bioinformatics tasks like analyzing genomes, aligning sequences, and more.
 
-You can connect to a remote server from your own computer (desktop or laptop) using tools like **SSH**, a secure login method. Once connected, you can run commands and programs on the server. In most cases, interacting with a remote server is done through the **command-line interface (CLI)**, which means there are no graphical icons—everything is typed as commands. (Don't panic!)
+You can connect to a remote server from your own computer (desktop or laptop) using tools like **SSH**, a secure login method. Once connected, you can run commands and programs on the server. In most cases, interacting with a remote server is done through the **command-line interface (CLI)**, which means there are no graphical icons— everything is typed as commands. (Don't panic!)
 
 
 
@@ -162,6 +162,86 @@ and type `n` in not to save workspace image.&#x20;
 
 
 
-## Downloading reference genome
+## Practice
+
+### Getting reverse complement sequence on R
+
+Now, let's practice running code on Aristotle.
+
+Use large-language model of your choice to get the following R code:
+
+(If you can, try write it yourself and troubleshoot.)
+
+1. A function which generates random 20bp-long DNA sequence
+2. A function which returns a reverse complement sequence of a DNA sequence
+3. A function which returns a GC content of a DNA sequence
+4. A function which returns counts of each base in a DNA sequence
+
+
+
+<details>
+
+<summary>Example solution</summary>
+
+```r
+## 1. Random DNA generation
+# Define nucleotides
+nucleotides <- c("A", "T", "G", "C")
+
+# Generate a random 20 bp sequence
+dna_seq <- paste0(sample(nucleotides, 20, replace = TRUE), collapse = "")
+
+# Print the sequence
+dna_seq
+
+## 2. Reverse complement
+# Define a function to get reverse complement
+reverse_complement <- function(seq) {
+  # Complement each nucleotide
+  comp <- chartr("ATGC", "TACG", seq)
+  # Reverse the complemented sequence
+  rev_comp <- paste(rev(strsplit(comp, NULL)[[1]]), collapse = "")
+  return(rev_comp)
+}
+
+# Get reverse complement
+rev_comp_seq <- reverse_complement(dna_seq)
+
+# Print reverse complement
+rev_comp_seq
+
+## 3. GC content
+# Function to calculate GC content
+gc_content <- function(seq) {
+  # Split sequence into individual nucleotides
+  nucleotides <- strsplit(seq, NULL)[[1]]
+  # Count G and C
+  gc_count <- sum(nucleotides %in% c("G", "C"))
+  # Calculate GC percentage
+  gc_percent <- (gc_count / length(nucleotides)) * 100
+  return(gc_percent)
+}
+
+# Calculate GC content
+gc_content(dna_seq)
+
+## 4. Base count
+# Split sequence into individual nucleotides
+nucleotides <- strsplit(dna_seq, NULL)[[1]]
+
+# Count each base
+base_counts <- table(nucleotides)
+
+# Print counts
+base_counts
+```
+
+</details>
+
+
+
+Thank you for following! If you are interested, please consider participating in the [survey](https://forms.cloud.microsoft/e/3DQD321xMg), so that we can deliver optimized workshops for you.&#x20;
+
+
 
 [^1]: Bash prompt
