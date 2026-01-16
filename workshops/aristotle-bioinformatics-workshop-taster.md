@@ -85,6 +85,39 @@ and press **Enter**. Your prompt will now be in Bash.
 
 
 
+## How to download reference genome
+
+```bash
+## Make directory under $HOME
+mkdir -p $HOME/reference
+cd $HOME/reference
+
+## Set the chromosome
+chr=22
+## Download the compressed files
+wget -O GRCh38.chr${chr}.fa.gz https://ftp.ensembl.org/pub/release-115/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_sm.chromosome.${chr}.fa.gz
+wget -O GRCh38.gtf.gz https://ftp.ensembl.org/pub/release-115/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.chr.gtf.gz
+
+## Unzip the compressed files
+gzip -d GRCh38.*.gz
+
+## Open the file
+less GRCh38.chr${chr}.fa
+```
+
+
+
+### Index the reference genome
+
+```bash
+module load gcc-libs samtools
+samtools faidx GRCh38.chr.${chr}.fa
+```
+
+
+
+
+
 ## How to open Python/R on Aristotle
 
 ### Python
