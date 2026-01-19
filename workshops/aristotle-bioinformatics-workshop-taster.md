@@ -13,7 +13,8 @@ In this session, we are going to learn:
 2. How to access a remote server (Aristotle)
 3. How to download reference genome
 4. Practice
-5.
+
+
 
 ## What is a remote server?
 
@@ -176,8 +177,6 @@ If you'd like to try by yourself, you can challenge yourself with these practice
 2. Download and index the chromosome which _ENSG00000141510_ is on.
 3. Get the sequence of _ENSG00000141510_.
 4. Did you find out what is the gene name of _ENSG00000141510_? Which file did you use to find it?
-
-
 
 <details>
 
