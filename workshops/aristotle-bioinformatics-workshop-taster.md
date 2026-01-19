@@ -1,5 +1,5 @@
 ---
-description: This taster workshop is for IoO Lates mini workshop on 29th January 2026.
+description: This taster is for IoO Lates mini workshop on 29th January 2026.
 icon: '0'
 ---
 
@@ -11,10 +11,9 @@ In this session, we are going to learn:
 
 1. What is a remote server
 2. How to access a remote server (Aristotle)
-3. How to open R/Python on a remote server
-4. How to run a code on a remote server
-
-
+3. How to download reference genome
+4. Practice
+5.
 
 ## What is a remote server?
 
@@ -87,189 +86,161 @@ and press **Enter**. Your prompt will now be in Bash.
 
 ## How to download reference genome
 
+We are going to download the reference genome (FASTA file: `*.fa`) and the annotation (GTF file: `*.gtf`).&#x20;
+
+Reference genome is the raw DNA sequence of the genome, consisting of A, C, G, and Ts. It is used as a base when running various analyses.&#x20;
+
+Annotation is a file that includes where genes, exons, transcripts, etc., are on the genome. It doesn't contain the actual sequence, but coordinates and gene IDs and so on.
+
+To save disk space, we are going to download a chromosome from the reference genome. Feel free to change `CHR` into your desired chromosome. In addition, the downloaded files are going to be compressed, or **gzipped** (`*.gz`). We are going to unzip the reference genome file but not the annotation file.
+
 ```bash
-## Make directory under $HOME
+## Make a reference directory under $HOME
 mkdir -p $HOME/reference
+## Move to the reference directory
 cd $HOME/reference
 
-## Set the chromosome
-chr=22
-## Download the compressed files
-wget -O GRCh38.chr${chr}.fa.gz https://ftp.ensembl.org/pub/release-115/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_sm.chromosome.${chr}.fa.gz
+## Set the chromosome (1-22/X/Y/MT)
+CHR=X
+## Download the reference genome (sequence)
+wget -O GRCh38.chr$CHR.fa.gz https://ftp.ensembl.org/pub/release-115/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_sm.chromosome.$CHR.fa.gz
+## Download the annotation (gene position)
 wget -O GRCh38.gtf.gz https://ftp.ensembl.org/pub/release-115/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.chr.gtf.gz
 
-## Unzip the compressed files
-gzip -d GRCh38.*.gz
+## Unzip the compressed fasta file
+gzip -d GRCh38.*.fa.gz
 
-## Open the file
-less GRCh38.chr${chr}.fa
-```
-
-
-
-### Index the reference genome
-
-```bash
+## Index the fasta file
 module load gcc-libs samtools
-samtools faidx GRCh38.chr.${chr}.fa
+samtools faidx GRCh38.chr$CHR.fa
 ```
 
+Now the reference genome is indexed, we are going to find the DNA sequence of a gene.
 
+### Find a gene position in the annotation file
 
-
-
-## How to open Python/R on Aristotle
-
-### Python
-
-To open Python prompt, you have to load the python module first.
+Let's look up the coordinate of a gene we want. In this example, because we downloaded the reference genome of chromosome X earlier, _XIST_ was chosen. However, feel free to set `GENE` into any gene that is on the chromosome you chose.&#x20;
 
 ```bash
-module load gcc-libs python3/recommended
-python3
+## Set the gene name
+GENE=XIST
+
+## Find the gene in the GTF file
+zcat GRCh38.gtf.gz  | grep $GENE -m 1 -i 
 ```
 
 ```
-Python 3.9.10 (main, Feb  9 2022, 13:29:07) 
-[GCC 4.9.2] on linux
-Type "help", "copyright", "credits" or "license" for more information.
->>> 
+X	havana	gene	73820649	73852714	.	-	.	gene_id "ENSG00000229807"; gene_version "15"; gene_name "XIST"; gene_source "havana"; gene_biotype "lncRNA";
 ```
 
-If you see `>>>`, this means you're now on python prompt, and the commands must be in Python syntax.&#x20;
+Now you see the coordinate for the gene on the first, the fourth, and the fifth column.
 
-For example, if you wish to print a string "Hello!", you now have to type `print("Hello!")` instead of `echo "Hello!"`, which is a bash syntax.
+`X`: Chromosome
 
-If you wish to exit the prompt:
+`73820649`: Gene start position
 
-```python
->>> quit()
-```
+`73852714`: Gene end position
 
-will take you back to the bash prompt.
 
-### R
 
-Opening R prompt is similar to opening a Python one, you need to load the r module first.
+Now you can use `samtools faidx` to check the sequence. make the coordinate into `chr:start-end` format and add it at the end of the command like the example below.
 
 ```bash
-module load r/recommended
-R
+samtools faidx GRCh38.chr$CHR.fa X:73820649-73852714
 ```
 
 ```
-R version 4.2.0 (2022-04-22) -- "Vigorous Calisthenics"
-Copyright (C) 2022 The R Foundation for Statistical Computing
-Platform: x86_64-pc-linux-gnu (64-bit)
-
-R is free software and comes with ABSOLUTELY NO WARRANTY.
-You are welcome to redistribute it under certain conditions.
-Type 'license()' or 'licence()' for distribution details.
-
-  Natural language support but running in an English locale
-
-R is a collaborative project with many contributors.
-Type 'contributors()' for more information and
-'citation()' on how to cite R or R packages in publications.
-
-Type 'demo()' for some demos, 'help()' for on-line help, or
-'help.start()' for an HTML browser interface to help.
-Type 'q()' to quit R.
-
-> 
-```
-
-If you see `>`, this means you're now on R prompt. Again, the syntax now has to be adjusted to R.&#x20;
-
-If you wish to exit the prompt, type the following command:
-
-```r
-q()
-```
+>X:73820649-73852714
+TACAAAGTTTTCAAAACAGTATATTTTATTTTACAATAGCAACCAACTCCCCAGTTTGTT
+TCAATTGTGACATCTAGATGGCTTAAGATTACTTTCTGGTGGTCACCCATGCTGAACAAT
+ATTTTTCAATCTTCCAAACAGCAAAGACTCAAAAGAGATTCTGCATTTCACATCAGTTCA
+CAAGTTCAAGAGTCTTCCATTTATCTTAGCTTTTGGAATAAATTATCTTTGAGGTAGAAG
+...
+aatgattccaaagaaaaattccttaaatattaaaaattgcctcaaaatattCCAAATACT
+TTCTTTAAAAAAATATGGAGGACGTGTCAAGAAGACACTAGGAGAAAGTATAGAATTTAA
+AAAAATATTTTATGGAATTTAGGTGATTTTTTTAAAGAAATACGCCATAAAGGGTGTTGG
+GGGACTAGAAAATGTTCTAGAAAGAACCCCAAGTGCAGAGAGATCTTCAGTCAGGAAGCT
+TCCAGCCCCGAGAGAGTAAGAAATAT
 
 ```
-Save workspace image? [y/n/c]: 
-```
 
-and type `n` in not to save workspace image.&#x20;
+Well done! This is the reference sequence of the gene of your interest.&#x20;
 
 
 
 ## Practice
 
-### Getting reverse complement sequence on R
+If you'd like to try by yourself, you can challenge yourself with these practice questions.
 
-Now, let's practice running code on Aristotle.
-
-Use large-language model of your choice to get the following R code:
-
-(If you can, try write it yourself and troubleshoot.)
-
-1. A function which generates random 20bp-long DNA sequence
-2. A function which returns a reverse complement sequence of a DNA sequence
-3. A function which returns a GC content of a DNA sequence
-4. A function which returns counts of each base in a DNA sequence
+1. Get the coordinate of a gene whose gene ID is _ENSG00000141510_.
+2. Download and index the chromosome which _ENSG00000141510_ is on.
+3. Get the sequence of _ENSG00000141510_.
+4. Did you find out what is the gene name of _ENSG00000141510_? Which file did you use to find it?
 
 
 
 <details>
 
-<summary>Example solution</summary>
+<summary>Solutions</summary>
 
-```r
-## 1. Random DNA generation
-# Define nucleotides
-nucleotides <- c("A", "T", "G", "C")
+1.
 
-# Generate a random 20 bp sequence
-dna_seq <- paste0(sample(nucleotides, 20, replace = TRUE), collapse = "")
-
-# Print the sequence
-dna_seq
-
-## 2. Reverse complement
-# Define a function to get reverse complement
-reverse_complement <- function(seq) {
-  # Complement each nucleotide
-  comp <- chartr("ATGC", "TACG", seq)
-  # Reverse the complemented sequence
-  rev_comp <- paste(rev(strsplit(comp, NULL)[[1]]), collapse = "")
-  return(rev_comp)
-}
-
-# Get reverse complement
-rev_comp_seq <- reverse_complement(dna_seq)
-
-# Print reverse complement
-rev_comp_seq
-
-## 3. GC content
-# Function to calculate GC content
-gc_content <- function(seq) {
-  # Split sequence into individual nucleotides
-  nucleotides <- strsplit(seq, NULL)[[1]]
-  # Count G and C
-  gc_count <- sum(nucleotides %in% c("G", "C"))
-  # Calculate GC percentage
-  gc_percent <- (gc_count / length(nucleotides)) * 100
-  return(gc_percent)
-}
-
-# Calculate GC content
-gc_content(dna_seq)
-
-## 4. Base count
-# Split sequence into individual nucleotides
-nucleotides <- strsplit(dna_seq, NULL)[[1]]
-
-# Count each base
-base_counts <- table(nucleotides)
-
-# Print counts
-base_counts
+```bash
+## Set the gene ID
+GENE=ENSG00000141510
+## Find the coordinate
+zcat GRCh38.gtf.gz | grep $GENE -i -m 1 
 ```
 
+```
+17	ensembl_havana	gene	7661779	7687546	.	-	.	gene_id "ENSG00000141510"; gene_version "20"; gene_name "TP53"; gene_source "ensembl_havana"; gene_biotype "protein_coding";
+```
+
+2.
+
+```bash
+## Set the chromosome
+CHR=17
+## Download the reference genome of chromosome 17
+wget -O GRCh38.chr$CHR.fa.gz https://ftp.ensembl.org/pub/release-115/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_sm.chromosome.$CHR.fa.gz
+## Decompress the FASTA file
+gzip -d GRCh38.*.fa.gz
+
+## Load samtools
+module load gcc-libs samtools
+## Index the fasta file
+samtools faidx GRCh38.chr$CHR.fa
+```
+
+3.
+
+```bash
+samtools faidx GRCh38.chr$CHR.fa 17:7661779-7687546
+```
+
+```
+>17:7661779-7687546
+gagacagagtctcactctgttgcacaggctggagtgcagtggcacaatctctgctcactg
+caacctcctcctccctggttaagagatcctcctgcctcagcccccttagtagctgggatt
+acaggcgtgggccaccactgccaggctaatttttgtatttttagtagagatgggatttcg
+ctatgttggccaggctgtcttgaactcctgacctcaggtgatccacctgccttggcctAA
+...
+ccccacccccagccccaGCGATTTTCCCGAGCTGAAAATACACGGAGCCGAGAGCCCGTG
+ACTCAGAGAGGACTCATCAAGTTCAGTCAGGAGCTTACCCAATCCAGGGAAGCGTGTCAC
+CGTCGTGGAAAGCACGCTCCCAGCCCGAACGCAAAGTGTCCCCGGAGCCCAGCAGCTACC
+TGCTCCCTGGACGGTGGCTCTAGACTTTTGAGAAGCTCAAAACTTTTAGCGCCAGTCTTG
+AGCACATGGGAGGGGAAAACCCCAATCC
+```
+
+4\.
+
+TP53. When solving question 1, the annotation (GTF) file returned `gene_name` as well as `gene_id`.
+
+
+
 </details>
+
+
 
 
 

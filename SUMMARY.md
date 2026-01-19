@@ -84,4 +84,5 @@
 
 ## Temp
 
+* [How to open Python/R on Aristotle](temp/how-to-open-python-r-on-aristotle.md)
 * [Interactive blocks](temp/interactive-blocks.md)
