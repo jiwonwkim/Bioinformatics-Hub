@@ -12,35 +12,69 @@ In this session, we are going to learn:
 1. What is a remote server
 2. How to access a remote server (Aristotle)
 3. How to download reference genome
-4. Practice
+4. How to get reference sequence of a gene
+5. Practice
 
 
 
-## What is a remote server?
+## 1. What is a remote server?
 
 A **remote server** is a powerful computer located elsewhere that you can access over the internet. It has lots of storage and processing power, so it can handle big bioinformatics tasks like analyzing genomes, aligning sequences, and more.
 
-You can connect to a remote server from your own computer (desktop or laptop) using tools like **SSH**, a secure login method. Once connected, you can run commands and programs on the server. In most cases, interacting with a remote server is done through the **command-line interface (CLI)**, which means there are no graphical icons— everything is typed as commands. (Don't panic!)
+You can connect to a remote server from your own computer (desktop or laptop) using tools like **SSH**, a secure login method. Once connected, you can run commands and programs on the server. In most cases, interacting with a remote server is done through the **command-line interface (CLI)**, which means there are no graphical icons — everything is typed as commands. (Don't panic!)
+
+Now, let's get started. Open Terminal (macOS) or Powershell (Windows) on your computer as following.
+
+{% tabs %}
+{% tab title="Windows" %}
+Open **Windows PowerShell** as administrator.
+
+<div align="left"><figure><img src="../.gitbook/assets/image (3).png" alt="" width="375"><figcaption></figcaption></figure></div>
+
+<div align="left"><figure><img src="../.gitbook/assets/image (2).png" alt="" width="289"><figcaption></figcaption></figure></div>
+
+<figure><img src="../.gitbook/assets/image (4).png" alt="" width="563"><figcaption></figcaption></figure>
+{% endtab %}
+
+{% tab title="macOS" %}
+Open **Terminal**.
+
+<div align="left" data-full-width="true"><figure><img src="../.gitbook/assets/image.png" alt="" width="178"><figcaption></figcaption></figure></div>
+
+<figure><img src="../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
+{% endtab %}
+{% endtabs %}
 
 
 
-## UCL Aristotle
+## 2. Accessing UCL Aristotle
 
 **UCL Aristotle** is a Linux-based compute service for practicing the command-line interface. Anyone with a UCL user ID and within the UCL institutional firewall can access Aristotle with the following command on **Terminal (macOS)** or **Powershell (Windows)**:
+
+#### 2-1. Access Aristotle
+
+Change `smgxxxx` into your UCL ID.
 
 ```bash
 ssh smgxxxx@aristotle.rc.ucl.ac.uk
 ```
 
-`smgxxxx` is your UCL ID.
+Once type the command, you will get the following question if you've never accessed Aristotle before:
 
-After running the command, you'll be asked to enter your password:
+```
+The authenticity of host 'aristotle.rc.ucl.ac.uk (144.82.251.107)' can't be established.
+ED25519 key fingerprint is SHA256:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? 
+```
+
+You can simply type `yes` in, then you'll be asked to enter your password:
 
 ```
 smgxxxx@aristotle.rc.ucl.ac.uk's password: 
 ```
 
-Type your UCL password in. Nothing will appear on the screen while typing—this is normal. Just type it and press Enter.
+Type your UCL password in. **Nothing will appear on the screen** while typing—this is normal. Just type it and press enter.
 
 If you enter it incorrectly, you’ll see:
 
@@ -85,7 +119,7 @@ and press **Enter**. Your prompt will now be in Bash.
 
 
 
-## How to download reference genome
+## 3. Dowloading reference genome
 
 We are going to download the reference genome (FASTA file: `*.fa`) and the annotation (GTF file: `*.gtf`).&#x20;
 
@@ -95,81 +129,135 @@ Annotation is a file that includes where genes, exons, transcripts, etc., are on
 
 To save disk space, we are going to download a chromosome from the reference genome. Feel free to change `CHR` into your desired chromosome. In addition, the downloaded files are going to be compressed, or **gzipped** (`*.gz`). We are going to unzip the reference genome file but not the annotation file.
 
+#### 3-1. Make a reference genome directory under the home directory
+
 ```bash
 ## Make a reference directory under $HOME
 mkdir -p $HOME/reference
-## Move to the reference directory
-cd $HOME/reference
+```
 
-## Set the chromosome (1-22/X/Y/MT)
-CHR=X
+#### 3-2. Move to the reference directory
+
+```bash
+## Change current directory into $HOME/reference
+cd $HOME/reference
+```
+
+Now that we are in the directory, we can download the reference genome.
+
+#### 3-3. Set the chromosome (1-22/X/Y)
+
+Set the chromosome you want to download the reference sequence of.&#x20;
+
+```bash
+## Set the chromosome (1-22/X/Y)
+CHR=22
+```
+
+#### 3-4. Download the reference genome
+
+Save the compressed reference genome as `GRCh38.chr22.fa.gz`, for example, and decompress the file.
+
+```bash
 ## Download the reference genome (sequence)
 wget -O GRCh38.chr$CHR.fa.gz https://ftp.ensembl.org/pub/release-115/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_sm.chromosome.$CHR.fa.gz
-## Download the annotation (gene position)
-wget -O GRCh38.gtf.gz https://ftp.ensembl.org/pub/release-115/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.chr.gtf.gz
+```
 
+```bash
 ## Unzip the compressed fasta file
 gzip -d GRCh38.*.fa.gz
+```
 
-## Index the fasta file
+#### 3-5. Download the annotation
+
+Save the compressed annotation as `GRCh38.gtf.gz`.
+
+```bash
+## Download the annotation (gene position)
+wget -O GRCh38.gtf.gz https://ftp.ensembl.org/pub/release-115/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.chr.gtf.gz
+```
+
+#### 3-6. Index the fasta file
+
+In many analyses, reference genome requires indexing for efficient access to any point in the file.&#x20;
+
+Load `samtools` module to index the file.
+
+```bash
+## Load modules
 module load gcc-libs samtools
+```
+
+```bash
+## Index the fasta file
 samtools faidx GRCh38.chr$CHR.fa
 ```
 
 Now the reference genome is indexed, we are going to find the DNA sequence of a gene.
 
-### Find a gene position in the annotation file
 
-Let's look up the coordinate of a gene we want. In this example, because we downloaded the reference genome of chromosome X earlier, _XIST_ was chosen. However, feel free to set `GENE` into any gene that is on the chromosome you chose.&#x20;
+
+## 4. Extracting reference sequence of a gene&#x20;
+
+
+
+Let's look up the coordinate of a gene we want. In this example, because we downloaded the reference genome of chromosome 22 earlier, _MCAT_ was chosen. However, feel free to set `GENE` into any gene that is on the chromosome you chose.&#x20;
+
+#### 4-1. Set the name of the gene on the chromosome
 
 ```bash
 ## Set the gene name
-GENE=XIST
+GENE=MCAT
+```
 
+Now let's find the genomic position of the gene.
+
+#### 4-2. Find a gene position from the annotation file
+
+```bash
 ## Find the gene in the GTF file
-zcat GRCh38.gtf.gz  | grep $GENE -m 1 -i 
+zcat GRCh38.gtf.gz  | grep $GENE -m 1 -w -i 
 ```
 
 ```
-X	havana	gene	73820649	73852714	.	-	.	gene_id "ENSG00000229807"; gene_version "15"; gene_name "XIST"; gene_source "havana"; gene_biotype "lncRNA";
+22	ensembl_havana	gene	43132209	43143398	.	-	.	gene_id "ENSG00000100294"; gene_version "14"; gene_name "MCAT"; gene_source "ensembl_havana"; gene_biotype "protein_coding";
 ```
 
 Now you see the coordinate for the gene on the first, the fourth, and the fifth column.
 
-`X`: Chromosome
+`22`: Chromosome
 
-`73820649`: Gene start position
+`43132209`: Gene start position
 
-`73852714`: Gene end position
+`43143398`: Gene end position
 
+#### 4-3. Get the reference sequence of the gene
 
-
-Now you can use `samtools faidx` to check the sequence. make the coordinate into `chr:start-end` format and add it at the end of the command like the example below.
+Now you can use `samtools faidx` to check the sequence. make the coordinate into **chr:start-end** format and add it at the end of the command like the example below.
 
 ```bash
-samtools faidx GRCh38.chr$CHR.fa X:73820649-73852714
+samtools faidx GRCh38.chr$CHR.fa 22:43132209-43143398
 ```
 
 ```
->X:73820649-73852714
-TACAAAGTTTTCAAAACAGTATATTTTATTTTACAATAGCAACCAACTCCCCAGTTTGTT
-TCAATTGTGACATCTAGATGGCTTAAGATTACTTTCTGGTGGTCACCCATGCTGAACAAT
-ATTTTTCAATCTTCCAAACAGCAAAGACTCAAAAGAGATTCTGCATTTCACATCAGTTCA
-CAAGTTCAAGAGTCTTCCATTTATCTTAGCTTTTGGAATAAATTATCTTTGAGGTAGAAG
+>22:43132209-43143398
+TTGGAATGTCTCATACTTAATATTGGCGCAGGAGCTGCTCTGAGGACGGGGCATGGAGCC
+AGGGGTCAGCTCCGAGGCAGGTATGTGCTGTGCTCCCTCTGGCGCCCCGCAGACCCGCAG
+TCCCAGTGGGTGACCAGGGTGTTCCTCCATGGTTCCACCCCTAGGACCAGGGCCTCAGTC
+GCCCTCCCTACCTGGCACTCCCCACACCCCGCACCTCACTCAAGGACCTTTCTACCAGAA
 ...
-aatgattccaaagaaaaattccttaaatattaaaaattgcctcaaaatattCCAAATACT
-TTCTTTAAAAAAATATGGAGGACGTGTCAAGAAGACACTAGGAGAAAGTATAGAATTTAA
-AAAAATATTTTATGGAATTTAGGTGATTTTTTTAAAGAAATACGCCATAAAGGGTGTTGG
-GGGACTAGAAAATGTTCTAGAAAGAACCCCAAGTGCAGAGAGATCTTCAGTCAGGAAGCT
-TCCAGCCCCGAGAGAGTAAGAAATAT
-
+CCTGGCTGCCCTGGCCCGGGAAGAGCAGCACGGAGCACTGGCCCGGCATTCGCCGCTCCG
+TCGCCGCCCAGGGCGCCTCCTCCTCCGCCCCGGTCGCATCTCGCAGCAGCTCCGCTACAC
+CCTGGGCGCCCGGCGGAGGCACCGGGAAGCTCGAGGCGCCGCGGCGGTAGCTGGCGCCCA
+AGCCCCTGACCCACGCTACCCGTGCGACCCGGACGCTCATGGTCGGACACCTGCCCGCGC
+GCGTTACCGTGGCGACCGAGGCCCGACTGC
 ```
 
 Well done! This is the reference sequence of the gene of your interest.&#x20;
 
 
 
-## Practice
+## 5. Practice
 
 If you'd like to try by yourself, you can challenge yourself with these practice questions.
 
@@ -238,8 +326,6 @@ TP53. When solving question 1, the annotation (GTF) file returned `gene_name` as
 
 
 </details>
-
-
 
 
 

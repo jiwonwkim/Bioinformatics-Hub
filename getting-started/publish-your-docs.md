@@ -24,7 +24,7 @@ You need software that allows you to connect to Myriad remotely:
 
 {% tabs %}
 {% tab title="macOS" %}
-<div align="left"><figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure></div>
+<div align="left"><figure><img src="../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure></div>
 
 Mac user can simply use the built-in Terminal application to access Myriad via SSH.
 

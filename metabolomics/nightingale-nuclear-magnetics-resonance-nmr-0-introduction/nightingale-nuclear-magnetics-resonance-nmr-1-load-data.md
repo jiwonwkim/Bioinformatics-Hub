@@ -128,7 +128,7 @@ Please provide the correct location for your **clinical data** file. If you are 
 
 The example clinical data `clinical_data.csv` has the following structure.
 
-<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (6).png" alt=""><figcaption></figcaption></figure>
 {% endstep %}
 
 {% step %}

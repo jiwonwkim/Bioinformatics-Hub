@@ -16,7 +16,7 @@ icon: registered
 
 Firstly, you'll have to install R on your computer. Go to [Comprehensive R Archive Network website (CRAN) 🔗](https://cran.r-project.org/).&#x20;
 
-<figure><img src="../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (3) (1).png" alt=""><figcaption></figcaption></figure>
 
 Depending on your operating system (OS), either click **Download R for macOS** or **Download R for Windows**.
 
@@ -24,13 +24,13 @@ Depending on your operating system (OS), either click **Download R for macOS** o
 {% tab title="MacOS" %}
 Go to **Latest release.** If you are using older Intel Mac device, click on **R-4.x.x-x86\_64.pkg**. If you are using Apple silicon Mac device, click **R-4.x.x-arm64.pkg** to download the installer.&#x20;
 
-<figure><img src="../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (4) (1).png" alt=""><figcaption></figcaption></figure>
 
 Once the installer is downloaded, install R by running the **.pkg** file.
 {% endtab %}
 
 {% tab title="Windows" %}
-<figure><img src="../.gitbook/assets/image (6).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (6) (1).png" alt=""><figcaption></figcaption></figure>
 
 Click **base**.
 
