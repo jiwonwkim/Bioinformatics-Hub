@@ -93,7 +93,7 @@ Last login: Thu Jan  8 13:33:07 2026 from xx.xx.x.x
 -bash-4.2<a data-footnote-ref href="#user-content-fn-1">$</a> 
 </code></pre>
 
-This means you are now logged into Aristotle and can run commands on the remote server.
+This means you are now logged into Aristotle and can run commands on the remote server. Also, it's important to know that from now on, at any point following the instructions, you can use **Ctrl+C** to cancel the command.
 
 <details>
 
