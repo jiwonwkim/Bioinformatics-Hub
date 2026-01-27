@@ -21,9 +21,11 @@ In this session, we are going to learn:
 
 A **remote server** is a powerful computer located elsewhere that you can access over the internet. It has lots of storage and processing power, so it can handle big bioinformatics tasks like analyzing genomes, aligning sequences, and more.
 
-You can connect to a remote server from your own computer (desktop or laptop) using tools like **SSH**, a secure login method. Once connected, you can run commands and programs on the server. In most cases, interacting with a remote server is done through the **command-line interface (CLI)**, which means there are no graphical icons — everything is typed as commands. (Don't panic!)
+You can connect to a remote server from your own computer (desktop or laptop) using tools like **SSH**, a secure login method. Once connected, you can run commands and programs on the server. In most cases, interacting with a remote server is done through the **command-line interface (CLI)**, which means there are no graphical icons; Everything is typed as commands. (Don't panic!)
 
-Now, let's get started. Open Terminal (macOS) or Powershell (Windows) on your computer as following.
+Now, let's get started. Open **Terminal (macOS)** or **Powershell (Windows)** on your computer as following.
+
+#### 1-1. Opening Terminal/Powershell
 
 {% tabs %}
 {% tab title="Windows" %}
@@ -53,13 +55,13 @@ Open **Terminal**.
 
 #### 2-1. Access Aristotle
 
-Change `smgxxxx` into your UCL ID.
+Replace `smgxxxx` with your UCL ID and enter the command:
 
 ```bash
 ssh smgxxxx@aristotle.rc.ucl.ac.uk
 ```
 
-Once type the command, you will get the following question if you've never accessed Aristotle before:
+Once you type the command, you may see the following message if you have never accessed Aristotle before:
 
 ```
 The authenticity of host 'aristotle.rc.ucl.ac.uk (144.82.251.107)' can't be established.
@@ -68,24 +70,24 @@ This key is not known by any other names.
 Are you sure you want to continue connecting (yes/no/[fingerprint])? 
 ```
 
-You can simply type `yes` in, then you'll be asked to enter your password:
+You can simply type `yes` and press Enter. You will then be asked to enter your password:
 
 ```
 smgxxxx@aristotle.rc.ucl.ac.uk's password: 
 ```
 
-Type your UCL password in. **Nothing will appear on the screen** while typing—this is normal. Just type it and press enter.
+Type your UCL password. Nothing will appear on the screen while you are typing — this is normal. Just enter your password and press Enter.
 
-If you enter it incorrectly, you’ll see:
+If you enter your password incorrectly, you will see:
 
 ```
 Permission denied, please try again.
 smgxxxx@aristotle.rc.ucl.ac.uk's password:
 ```
 
-and you can try again.
+You can then try entering your password again.
 
-Once the correct password is entered, you will now see the **bash prompt**, which usually starts with `bash-4.2$`:
+Once you enter the correct password, you will see the bash prompt, which usually looks like this:
 
 <pre><code>Last failed login: Mon Jan 12 15:22:57 GMT 2026 from xx.xx.x.x on ssh:notty
 There were 1 failed login attempts since the last successful login.
@@ -93,7 +95,9 @@ Last login: Thu Jan  8 13:33:07 2026 from xx.xx.x.x
 -bash-4.2<a data-footnote-ref href="#user-content-fn-1">$</a> 
 </code></pre>
 
-This means you are now logged into Aristotle and can run commands on the remote server. Also, it's important to know that from now on, at any point following the instructions, you can use **Ctrl+C** to cancel the command.
+This means you are now logged into Aristotle and can run commands on the remote server.&#x20;
+
+Also, it’s important to know that at any point while following these instructions, you can use **Ctrl+C** to cancel the current command.
 
 <details>
 
@@ -119,15 +123,17 @@ and press **Enter**. Your prompt will now be in Bash.
 
 
 
-## 3. Dowloading reference genome
+## 3. Downloading reference genome
 
 We are going to download the reference genome (FASTA file: `*.fa`) and the annotation (GTF file: `*.gtf`).&#x20;
 
-Reference genome is the raw DNA sequence of the genome, consisting of A, C, G, and Ts. It is used as a base when running various analyses.&#x20;
+The **reference genome** is the raw DNA sequence of the genome, consisting of A, C, G, and T. It is used as a base when running various analyses.&#x20;
 
-Annotation is a file that includes where genes, exons, transcripts, etc., are on the genome. It doesn't contain the actual sequence, but coordinates and gene IDs and so on.
+The **annotation** file contains information about where genes, exons, transcripts, and other features are located on the genome. It does not contain the actual DNA sequence, but instead includes genomic coordinates, gene IDs, and related metadata.
 
-To save disk space, we are going to download a chromosome from the reference genome. Feel free to change `CHR` into your desired chromosome. In addition, the downloaded files are going to be compressed, or **gzipped** (`*.gz`). We are going to unzip the reference genome file but not the annotation file.
+To save disk space, we will download only a single chromosome from the reference genome. You can replace `CHR` with your desired chromosome.
+
+The downloaded files will be compressed (gzipped, `*.gz`). We will unzip the reference genome file, but we will keep the annotation file compressed.
 
 #### 3-1. Make a reference genome directory under the home directory
 
@@ -138,16 +144,27 @@ mkdir -p $HOME/reference
 
 #### 3-2. Move to the reference directory
 
+Change the current directory to `$HOME/reference`:
+
 ```bash
 ## Change current directory into $HOME/reference
 cd $HOME/reference
 ```
 
-Now that we are in the directory, we can download the reference genome.
+Now that you are in this directory, you can download the reference genome.
 
-#### 3-3. Set the chromosome (1-22/X/Y)
+If you want to check which files and directories are in the current directory, use:
 
-Set the chromosome you want to download the reference sequence of.&#x20;
+```bash
+## List the files in the current directory
+ls
+```
+
+Since you just created this directory, there are no files inside, so nothing will be shown.
+
+#### 3-3. Set the chromosome (1-22, X, or Y)
+
+Specify the chromosome whose reference sequence you want to download:
 
 ```bash
 ## Set the chromosome (1-22/X/Y)
@@ -156,12 +173,14 @@ CHR=22
 
 #### 3-4. Download the reference genome
 
-Save the compressed reference genome as `GRCh38.chr22.fa.gz`, for example, and decompress the file.
+Download the compressed reference genome and save it as `GRCh38.chr22.fa.gz` (for example).
 
 ```bash
 ## Download the reference genome (sequence)
 wget -O GRCh38.chr$CHR.fa.gz https://ftp.ensembl.org/pub/release-115/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_sm.chromosome.$CHR.fa.gz
 ```
+
+Then, decompress the file.&#x20;
 
 ```bash
 ## Unzip the compressed fasta file
@@ -170,74 +189,80 @@ gzip -d GRCh38.*.fa.gz
 
 #### 3-5. Download the annotation
 
-Save the compressed annotation as `GRCh38.gtf.gz`.
+Download the compressed annotation file and save it as `GRCh38.gtf.gz`. This file contains the positions of genes and other genomic features.
 
 ```bash
 ## Download the annotation (gene position)
 wget -O GRCh38.gtf.gz https://ftp.ensembl.org/pub/release-115/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.chr.gtf.gz
 ```
 
-#### 3-6. Index the fasta file
+#### 3-6. Index the FASTA file
 
-In many analyses, reference genome requires indexing for efficient access to any point in the file.&#x20;
+Many analyses require the reference genome to be indexed for efficient access to any position in the file.
 
 Load `samtools` module to index the file.
 
 ```bash
-## Load modules
+## Load required modules
 module load gcc-libs samtools
 ```
+
+Index the reference genome using `samtools faidx`.
 
 ```bash
 ## Index the fasta file
 samtools faidx GRCh38.chr$CHR.fa
 ```
 
-Now the reference genome is indexed, we are going to find the DNA sequence of a gene.
+Now that the reference genome is indexed, you can proceed to find the DNA sequence of a specific gene.
 
 
 
 ## 4. Extracting reference sequence of a gene&#x20;
 
+Find the coordinates of the gene you want to extract. In this example, we use _MCAT_, since we downloaded the reference genome for chromosome 22.
 
+You can replace `GENE` with any gene located on the chromosome you selected.
 
-Let's look up the coordinate of a gene we want. In this example, because we downloaded the reference genome of chromosome 22 earlier, _MCAT_ was chosen. However, feel free to set `GENE` into any gene that is on the chromosome you chose.&#x20;
+#### 4-1. Set the gene name on the chromosome
 
-#### 4-1. Set the name of the gene on the chromosome
+Specify the gene you want to extract from the reference genome:
 
 ```bash
 ## Set the gene name
 GENE=MCAT
 ```
 
-Now let's find the genomic position of the gene.
-
 #### 4-2. Find a gene position from the annotation file
+
+Use the annotation file to locate the genomic coordinates of your gene:
 
 ```bash
 ## Find the gene in the GTF file
 zcat GRCh38.gtf.gz  | grep $GENE -m 1 -w -i 
 ```
 
+Example output:
+
 ```
 22	ensembl_havana	gene	43132209	43143398	.	-	.	gene_id "ENSG00000100294"; gene_version "14"; gene_name "MCAT"; gene_source "ensembl_havana"; gene_biotype "protein_coding";
 ```
 
-Now you see the coordinate for the gene on the first, the fourth, and the fifth column.
+From this line, the relevant coordinates are:
 
-`22`: Chromosome
-
-`43132209`: Gene start position
-
-`43143398`: Gene end position
+* **Column 1:** Chromosome (`22`)
+* **Column 4:** Gene start position (`43132209`)
+* **Column 5:** Gene end position (`43143398`)
 
 #### 4-3. Get the reference sequence of the gene
 
-Now you can use `samtools faidx` to check the sequence. make the coordinate into **chr:start-end** format and add it at the end of the command like the example below.
+You can now extract the gene sequence using `samtools faidx`. Specify the coordinates in the **`chr:start-end`** format and add them at the end of the command, like this:
 
 ```bash
 samtools faidx GRCh38.chr$CHR.fa 22:43132209-43143398
 ```
+
+This will output the DNA sequence of the gene directly from the reference genome:
 
 ```
 >22:43132209-43143398
@@ -253,18 +278,18 @@ AGCCCCTGACCCACGCTACCCGTGCGACCCGGACGCTCATGGTCGGACACCTGCCCGCGC
 GCGTTACCGTGGCGACCGAGGCCCGACTGC
 ```
 
-Well done! This is the reference sequence of the gene of your interest.&#x20;
+Well done! This is the reference sequence of the gene you selected.
 
 
 
 ## 5. Practice
 
-If you'd like to try by yourself, you can challenge yourself with these practice questions.
+Try these exercises on your own:
 
-1. Get the coordinate of a gene whose gene ID is _ENSG00000141510_.
-2. Download and index the chromosome which _ENSG00000141510_ is on.
-3. Get the sequence of _ENSG00000141510_.
-4. Did you find out what is the gene name of _ENSG00000141510_? Which file did you use to find it?
+1. Find the genomic coordinates of the gene with **gene ID** `ENSG00000141510`.
+2. Download and index the chromosome that contains `ENSG00000141510`.
+3. Extract the DNA sequence of `ENSG00000141510`.
+4. Determine the **gene name** corresponding to `ENSG00000141510`. Which file did you use to find this information?
 
 <details>
 
@@ -276,7 +301,7 @@ If you'd like to try by yourself, you can challenge yourself with these practice
 ## Set the gene ID
 GENE=ENSG00000141510
 ## Find the coordinate
-zcat GRCh38.gtf.gz | grep $GENE -i -m 1 
+zcat GRCh38.gtf.gz | grep $GENE -i -w -m 1 
 ```
 
 ```
@@ -321,7 +346,7 @@ AGCACATGGGAGGGGAAAACCCCAATCC
 
 4\.
 
-TP53. When solving question 1, the annotation (GTF) file returned `gene_name` as well as `gene_id`.
+The gene name is _**TP53**_. The annotation (GTF) file provides both the `gene_id` and `gene_name`.
 
 
 
@@ -329,8 +354,6 @@ TP53. When solving question 1, the annotation (GTF) file returned `gene_name` as
 
 
 
-Thank you for following! If you are interested, please consider participating in the [survey](https://forms.cloud.microsoft/e/3DQD321xMg), so that we can deliver optimized workshops for you.&#x20;
-
-
+Thank you for following along! If you’re interested, please consider participating in the [survey](https://forms.cloud.microsoft/e/3DQD321xMg), so we can improve and tailor future workshops for you.
 
 [^1]: Bash prompt
