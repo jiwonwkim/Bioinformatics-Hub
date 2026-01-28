@@ -183,23 +183,32 @@ ls
 
 Since you just created this directory, there are no files inside, so nothing will be shown.
 
-#### 3-3. Download the reference genome
+#### 3-3. Set the chromosome (1-22, X, or Y)
 
-Download the compressed reference genome and save it as `GRCh38.fa.gz`.
+Specify the chromosome whose reference sequence you want to download:
+
+```bash
+## Set the chromosome (1-22/X/Y)
+CHR=22
+```
+
+#### 3-4. Download the reference genome
+
+Download the compressed reference genome and save it as `GRCh38.chr22.fa.gz` (for example).
 
 ```bash
 ## Download the reference genome (sequence)
-wget -O GRCh38.fa.gz https://ftp.ensembl.org/pub/release-115/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa.gz
+wget -O GRCh38.chr$CHR.fa.gz https://ftp.ensembl.org/pub/release-115/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_sm.chromosome.$CHR.fa.gz
 ```
 
 Then, decompress the file.&#x20;
 
 ```bash
 ## Unzip the compressed fasta file
-gzip -d GRCh38.fa.gz
+gzip -d GRCh38.*.fa.gz
 ```
 
-#### 3-4. Download the annotation
+#### 3-5. Download the annotation
 
 Download the compressed annotation file and save it as `GRCh38.gtf.gz`. This file contains the positions of genes and other genomic features.
 
@@ -208,7 +217,7 @@ Download the compressed annotation file and save it as `GRCh38.gtf.gz`. This fil
 wget -O GRCh38.gtf.gz https://ftp.ensembl.org/pub/release-115/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.chr.gtf.gz
 ```
 
-#### 3-5. Index the FASTA file
+#### 3-6. Index the FASTA file
 
 Many analyses require the reference genome to be indexed for efficient access to any position in the file.
 
@@ -223,7 +232,7 @@ Index the reference genome using `samtools faidx`.
 
 ```bash
 ## Index the fasta file
-samtools faidx GRCh38.fa
+samtools faidx GRCh38.chr$CHR.fa
 ```
 
 Now that the reference genome is indexed, you can proceed to find the DNA sequence of a specific gene.
@@ -232,7 +241,9 @@ Now that the reference genome is indexed, you can proceed to find the DNA sequen
 
 ## 4. Extracting reference sequence of a gene&#x20;
 
-Find the coordinates of the gene you want to extract. In this example, we use _MCAT_, but you can replace `GENE` with any gene of your interest.
+Find the coordinates of the gene you want to extract. In this example, we use _MCAT_, since we downloaded the reference genome for chromosome 22.
+
+You can replace `GENE` with any gene located on the chromosome you selected.
 
 #### 4-1. Set the gene name on the chromosome
 
@@ -249,7 +260,7 @@ Use the annotation file to locate the genomic coordinates of your gene:
 
 ```bash
 ## Find the gene in the GTF file
-zcat GRCh38.gtf.gz | grep -i -m 1 -w "gene_name \"$GENE\"" 
+zcat GRCh38.gtf.gz  | grep $GENE -m 1 -w -i 
 ```
 
 Example output:
@@ -270,7 +281,7 @@ You can now extract the gene sequence using `samtools faidx`. Specify the coordi
 
 ```bash
 ## Print the sequence of the requested position
-samtools faidx GRCh38.fa 22:43132209-43143398
+samtools faidx GRCh38.chr$CHR.fa 22:43132209-43143398
 ```
 
 This will output the DNA sequence of the gene directly from the reference genome:
@@ -298,8 +309,9 @@ Well done! This is the reference sequence of the gene you selected.
 Try these exercises on your own:
 
 1. Find the genomic coordinates of the gene with **gene ID** `ENSG00000141510`.
-2. Extract the DNA sequence of `ENSG00000141510`.
-3. Determine the **gene name** corresponding to `ENSG00000141510`. Which file did you use to find this information?
+2. Download and index the chromosome that contains `ENSG00000141510`.
+3. Extract the DNA sequence of `ENSG00000141510`.
+4. Determine the **gene name** corresponding to `ENSG00000141510`. Which file did you use to find this information?
 
 <details>
 
@@ -321,7 +333,23 @@ zcat GRCh38.gtf.gz | grep $GENE -i -w -m 1
 2.
 
 ```bash
-samtools faidx GRCh38.fa 17:7661779-7687546
+## Set the chromosome
+CHR=17
+## Download the reference genome of chromosome 17
+wget -O GRCh38.chr$CHR.fa.gz https://ftp.ensembl.org/pub/release-115/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_sm.chromosome.$CHR.fa.gz
+## Decompress the FASTA file
+gzip -d GRCh38.*.fa.gz
+
+## Load samtools
+module load gcc-libs samtools
+## Index the fasta file
+samtools faidx GRCh38.chr$CHR.fa
+```
+
+3.
+
+```bash
+samtools faidx GRCh38.chr$CHR.fa 17:7661779-7687546
 ```
 
 ```
@@ -338,7 +366,7 @@ TGCTCCCTGGACGGTGGCTCTAGACTTTTGAGAAGCTCAAAACTTTTAGCGCCAGTCTTG
 AGCACATGGGAGGGGAAAACCCCAATCC
 ```
 
-3.
+4\.
 
 The gene name is _**TP53**_. The annotation (GTF) file provides both the `gene_id` and `gene_name`.
 
