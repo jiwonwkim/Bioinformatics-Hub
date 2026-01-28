@@ -60,6 +60,7 @@ Open **Terminal**.
 Replace `smgxxxx` with your UCL ID and enter the command:
 
 ```bash
+## Use SSH to access Aristotle
 ssh smgxxxx@aristotle.rc.ucl.ac.uk
 ```
 
@@ -279,6 +280,7 @@ From this line, the relevant coordinates are:
 You can now extract the gene sequence using `samtools faidx`. Specify the coordinates in the **`chr:start-end`** format and add them at the end of the command, like this:
 
 ```bash
+## Print the sequence of the requested position
 samtools faidx GRCh38.chr$CHR.fa 22:43132209-43143398
 ```
 
