@@ -144,7 +144,16 @@ mkdir -p $HOME/reference
 
 #### 3-2. Move to the reference directory
 
-Change the current directory to `$HOME/reference`:
+Check your current directory with `pwd`.&#x20;
+
+```bash
+## Print working directory
+pwd
+```
+
+You will see `/home/smgxxxx`.&#x20;
+
+Now let's change the current directory into `$HOME/reference`:
 
 ```bash
 ## Change current directory into $HOME/reference
@@ -152,6 +161,15 @@ cd $HOME/reference
 ```
 
 Now that you are in this directory, you can download the reference genome.
+
+Check your current directory again.
+
+```bash
+## Print working directory
+pwd
+```
+
+&#x20;You will now see `/home/smgxxxx/reference`.
 
 If you want to check which files and directories are in the current directory, use:
 
