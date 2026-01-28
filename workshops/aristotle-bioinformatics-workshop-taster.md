@@ -5,7 +5,7 @@ icon: '0'
 
 # Aristotle: Bioinformatics workshop taster
 
-## Welcome to bioinformatics taster session!
+## Welcome to the bioinformatics taster session!
 
 In this session, we are going to learn:
 
