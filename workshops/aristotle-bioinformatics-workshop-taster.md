@@ -21,6 +21,8 @@ In this session, we are going to learn:
 
 A **remote server** is a powerful computer located elsewhere that you can access over the internet. It has lots of storage and processing power, so it can handle big bioinformatics tasks like analyzing genomes, aligning sequences, and more.
 
+<figure><img src="../.gitbook/assets/Screenshot 2026-01-28 at 11.06.53.png" alt=""><figcaption><p>Image modified from <a href="https://www.rapidseedbox.com/blog/remote-servers">https://www.rapidseedbox.com/blog/remote-servers</a></p></figcaption></figure>
+
 You can connect to a remote server from your own computer (desktop or laptop) using tools like **SSH**, a secure login method. Once connected, you can run commands and programs on the server. In most cases, interacting with a remote server is done through the **command-line interface (CLI)**, which means there are no graphical icons; Everything is typed as commands. (Don't panic!)
 
 Now, let's get started. Open **Terminal (macOS)** or **Powershell (Windows)** on your computer as following.
