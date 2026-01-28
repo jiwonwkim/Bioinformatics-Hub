@@ -249,7 +249,7 @@ Use the annotation file to locate the genomic coordinates of your gene:
 
 ```bash
 ## Find the gene in the GTF file
-zcat GRCh38.gtf.gz  | grep $GENE -m 1 -w -i 
+zcat GRCh38.gtf.gz | grep -i -m 1 -w "gene_name \"$GENE\"" 
 ```
 
 Example output:
