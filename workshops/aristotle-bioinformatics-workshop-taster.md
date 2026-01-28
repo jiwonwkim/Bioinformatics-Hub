@@ -269,6 +269,19 @@ Example output:
 22	ensembl_havana	gene	43132209	43143398	.	-	.	gene_id "ENSG00000100294"; gene_version "14"; gene_name "MCAT"; gene_source "ensembl_havana"; gene_biotype "protein_coding";
 ```
 
+<details>
+
+<summary>If you're getting antisense genes (*-AS)</summary>
+
+```bash
+## Set the gene name with \"
+GENE=\"MCAT\"
+## Find the gene in the GTF file
+zcat GRCh38.gtf.gz  | grep $GENE -m 1 -w -i 
+```
+
+</details>
+
 From this line, the relevant coordinates are:
 
 * **Column 1:** Chromosome (`22`)
