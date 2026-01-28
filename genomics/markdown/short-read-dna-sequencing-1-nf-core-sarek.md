@@ -64,7 +64,7 @@ Configuration file is required to run Nextflow script smoothly. Download the fil
 {% step %}
 ### Run the pipeline
 
-Upload this .sh ![](<../../.gitbook/assets/Screenshot 2025-10-03 at 12.22.09 (1).png>)file to `$HOME/projects/sarek` and submit the job using `qsub`.
+Upload this .sh file to `$HOME/projects/sarek` and submit the job using `qsub`.
 
 {% file src="../../.gitbook/assets/sarek.sh" %}
 
