@@ -271,14 +271,19 @@ Example output:
 
 <details>
 
-<summary>If you're getting antisense genes (*-AS)</summary>
+<summary>If you're getting incorrect result</summary>
 
 ```bash
 ## Set the gene name with \"
 GENE=\"MCAT\"
+```
+
+```bash
 ## Find the gene in the GTF file
 zcat GRCh38.gtf.gz  | grep $GENE -m 1 -w -i 
 ```
+
+
 
 </details>
 
