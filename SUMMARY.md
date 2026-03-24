@@ -75,6 +75,7 @@
 ## Workshops
 
 * [Aristotle: Bioinformatics workshop taster](workshops/aristotle-bioinformatics-workshop-taster.md)
+* [Introduction to RNA-seq Analysis](workshops/introduction-to-rna-seq-analysis.md)
 
 ## Useful Links
 
