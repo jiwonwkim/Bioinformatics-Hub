@@ -36,7 +36,8 @@ conda create -n jupyter -c conda-forge \
   jupyterlab \
   r-base \
   r-irkernel \
-  r-essentials -y
+  r-essentials \
+  r-locfit -y
 ```
 
 #### During installation
