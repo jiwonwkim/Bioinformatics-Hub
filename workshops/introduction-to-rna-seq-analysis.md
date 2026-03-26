@@ -31,13 +31,16 @@ This indicates that Conda is installed and the base environment is active.
 Instead of installing everything in the base environment, we will create a separate environment named `jupyter` for JupyterLab:
 
 ```bash
-conda create -n jupyter -c conda-forge \
+conda create -n jupyter -c conda-forge -c bioconda \
   python=3.11 \
   jupyterlab \
   r-base \
   r-irkernel \
   r-essentials \
-  r-locfit -y
+  r-locfit \
+  bioconductor-org.hs.eg.db \
+  bioconductor-annotationdbi \
+  bioconductor-keggrest -y
 ```
 
 #### During installation
@@ -56,7 +59,7 @@ Once the installation is complete, you will see messages like:
 
 <figure><img src="../.gitbook/assets/image (36).png" alt=""><figcaption></figcaption></figure>
 
-Run the following code to actiavate the new environment.
+Run the following code to activate the new environment.
 
 ```
 conda activate jupyter
@@ -205,12 +208,104 @@ if (!requireNamespace("org.Hs.eg.db", quietly = TRUE)) {
 }
 ```
 
+When the installation is complete, load the libraries `DESeq2` and `org.Hs.eg.db`.
+
 ```r
 # Load the libraries
 library(DESeq2)
 library(org.Hs.eg.db)
-library(clusterProfiler)
 ```
+
+#### Load data
+
+Set the count table data path as `file1`.
+
+```r
+# Set the file path
+file1 <- 'data/salmon.merged.gene_counts.tsv' 
+```
+
+using `read.csv` and&#x20;
+
+Import the count table into `count_data`
+
+
+
+```r
+# Read in raw gene count table and save it to count_data
+count_data <- read.csv(file1, sep="\t", header=TRUE)
+count_data <- count_data[!duplicated(count_data$gene_name), ]
+rownames(count_data) <- count_data$gene_name
+count_data = subset(count_data, select = -c(gene_name, gene_id))
+```
+
+Check if the count table is well imported into `count_data`.
+
+```
+head(count_data)
+```
+
+
+
+```r
+# Generate metadata (contain sample names and conditions)
+metadata <- data.frame(
+	sample = colnames(count_data),  # sample name
+	condition = sub("[0-9]+$", "", colnames(count_data)) # condition
+)
+# change rownames of metadata into sample names
+rownames(metadata) <- metadata$sample 
+```
+
+```markdown
+metadata
+```
+
+#### Run DESeq2
+
+```r
+###########################################
+## 3. Run DESeq2 pairwise (GA vs NORMAL) ##
+###########################################
+# Convert count_data into appropriate format for DESeq2 run and save to dds
+dds <- DESeqDataSetFromMatrix(countData = round(count_data), 
+                              colData = metadata, 
+                              design = ~ condition)
+# Set Control group as refrence
+dds$condition <- relevel(dds$condition, ref = "Control")    
+# Run default DEG analysis with normalization                      
+dds <- DESeq(dds)
+# Extract differential expression of ALL the genes 
+# (including the insignificant ones) to res
+res <- results(dds)
+# Omit any NA values in padj or log2FoldChange
+res <- subset(res, !is.na(padj) & !is.na(log2FoldChange))
+# Save the genes with Padj < 0.05 to sig_res (significant genes)
+sig_res <- res[res$padj < 0.05,] 
+```
+
+
+
+#### Save data
+
+```r
+name='Treated_vs_Control'
+of1 <- paste0("result/",name,"_DESeq2_Results.csv")
+write.csv(res, of1, row.names = TRUE, quote = FALSE)
+```
+
+```r
+of2 <- paste0("result/",name,"_DESeq2_Results_padj0.05.csv") 
+write.csv(sig_res, of2, row.names = TRUE, quote = FALSE)
+```
+
+
+
+##
+
+##
+
+##
 
 ## 3. Visualization
 
