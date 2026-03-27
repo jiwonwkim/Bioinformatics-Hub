@@ -75,7 +75,9 @@
 ## Workshops
 
 * [Aristotle: Bioinformatics workshop taster](workshops/aristotle-bioinformatics-workshop-taster.md)
-* [Introduction to RNA-seq Analysis](workshops/introduction-to-rna-seq-analysis.md)
+* [Introduction to RNA-seq Analysis Part 1: Conda & Jupyter setup](workshops/introduction-to-rna-seq-analysis-part-1-conda-and-jupyter-setup/README.md)
+  * [Part 2: DESeq2: Differentially expressed genes identification](workshops/introduction-to-rna-seq-analysis-part-1-conda-and-jupyter-setup/part-2-deseq2-differentially-expressed-genes-identification.md)
+  * [Part 3: Visualization](workshops/introduction-to-rna-seq-analysis-part-1-conda-and-jupyter-setup/part-3-visualization.md)
 
 ## Useful Links
 

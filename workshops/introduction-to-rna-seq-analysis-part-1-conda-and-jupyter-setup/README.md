@@ -4,11 +4,15 @@ hidden: true
 icon: '1'
 ---
 
-# Introduction to RNA-seq Analysis
+# Introduction to RNA-seq Analysis Part 1: Conda & Jupyter setup
 
 Welcome to the Bioinformatics Hub workshop! In this session, we will explore a typical RNA-seq analysis workflow and set up the computational environment needed to run it.
 
-To run the analysis, we will need an environment for running R code. For this, we will download and install [**Jupyter**](https://jupyter.org/) on your laptops. To begin, please open **Terminal (Mac)** or **PowerShell (Windows)**.
+To run the analysis, we will need an environment for running R code. For this, we will download and install [**Jupyter**](https://jupyter.org/) on your laptops. To begin, please open **Terminal (Mac)** or **PowerShell (Windows)** and type `bash` in.
+
+```bash
+bash
+```
 
 ## 1. Jupyter setup
 
@@ -22,7 +26,7 @@ Download and install **Miniconda** from the installer from the [Conda documentat
 
 You should now see `(base)` at the beginning of your command line.&#x20;
 
-<figure><img src="../.gitbook/assets/image (32).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (32).png" alt=""><figcaption></figcaption></figure>
 
 This indicates that Conda is installed and the base environment is active.
 
@@ -47,25 +51,21 @@ conda create -n jupyter -c conda-forge -c bioconda \
 
 You may be prompted to confirm the installation.
 
-<figure><img src="../.gitbook/assets/image (33).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (33).png" alt=""><figcaption></figcaption></figure>
 
 * Type `a` in and press enter twice to proceed.
 
-<figure><img src="../.gitbook/assets/image (35).png" alt=""><figcaption></figcaption></figure>
-
-* Type `y` and press enter to proceed.
-
 Once the installation is complete, you will see messages like:
 
-<figure><img src="../.gitbook/assets/image (36).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (36).png" alt=""><figcaption></figcaption></figure>
 
 Run the following code to activate the new environment.
 
-```
+```bash
 conda activate jupyter
 ```
 
-<figure><img src="../.gitbook/assets/image (37).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (37).png" alt=""><figcaption></figcaption></figure>
 
 Now you are in `jupyter` environment, as you can tell from `(jupyter)` at the beginning of the prompt.
 
@@ -79,7 +79,7 @@ A browser window should open automatically showing the JupyterLab interface.
 
 If it does not open, check the terminal for a URL (including a port number), for example:
 
-<figure><img src="../.gitbook/assets/image (38).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (38).png" alt=""><figcaption></figcaption></figure>
 
 ```
 http://localhost:8888
@@ -94,17 +94,33 @@ You should now see the JupyterLab home page.
 * The **left panel** is the file explorer
 * On the **right-hand side**, you can create a new notebook
 
-<figure><img src="../.gitbook/assets/image (39).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (39).png" alt=""><figcaption></figcaption></figure>
 
 To start a terminal, click **Terminal**.
 
-<figure><img src="../.gitbook/assets/image (41).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (41).png" alt=""><figcaption></figcaption></figure>
 
 To start an R notebook, click **R**.
 
-<figure><img src="../.gitbook/assets/image (40).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (40).png" alt=""><figcaption></figcaption></figure>
 
 You can type your code into the cells and press **Shift + Enter** to run it.
+
+**Additional keys**
+
+* **`Esc`** → enter command mode / stop editing&#x20;
+* **`Enter`** → edit the cell
+* `a` → add cell above&#x20;
+* **`b`** → add cell below&#x20;
+* `d` `d` → delete cell&#x20;
+* `z` → undo cell deletion&#x20;
+* **`Shift + Enter`** → run cell and move to next
+* **`Ctrl + Enter`** → run cell (stay in place)
+* `m` → convert cell to Markdown&#x20;
+* `y` → convert cell to code
+* `x` → cut cell
+* `c` → copy cell
+* `v` → paste below
 
 
 
@@ -116,29 +132,29 @@ You can type your code into the cells and press **Shift + Enter** to run it.
 
 When you sequence RNA, you typically obtain files in FASTQ format (e.g. `sample1_R1.fastq`, `sample1_R1.fastq.gz`, `sample1_R1.fq`, `sample1_R1.fq.gz`). This file format stores the raw sequencing reads along with their base quality scores.
 
-<figure><img src="../.gitbook/assets/image (42).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (42).png" alt=""><figcaption></figcaption></figure>
 
 These files do not contain information about where the sequences originate in the genome. To determine which genes the reads come from, they must be aligned (mapped) to a reference genome.
 
 For example, think of the reference genome as a complete picture (like the Mona Lisa), and the raw reads as scattered puzzle pieces. Alignment software “assembles” these pieces by finding where each read best fits, assigning genomic coordinates and linking each read to its corresponding genomic location.
 
-<figure><img src="../.gitbook/assets/Unaligned.png" alt=""><figcaption><p>Reference and unaligned reads</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Unaligned.png" alt=""><figcaption><p>Reference and unaligned reads</p></figcaption></figure>
 
 
 
-<figure><img src="../.gitbook/assets/Aligned.png" alt=""><figcaption><p>Reads aligned to the reference genome</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Aligned.png" alt=""><figcaption><p>Reads aligned to the reference genome</p></figcaption></figure>
 
 #### SAM/BAM: Sequence + Coordinates on genome
 
 The aligned data is stored in SAM/BAM format (e.g. `sample1.sam`, `sample1.bam`). SAM is a human-readable text format, while BAM is its compressed binary equivalent. These files contain each read’s sequence along with its alignment information, including where it maps on the reference genome.
 
-<figure><img src="../.gitbook/assets/IGV.png" alt=""><figcaption><p>BAM file opened on IGV</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/IGV.png" alt=""><figcaption><p>BAM file opened on IGV</p></figcaption></figure>
 
 Once the alignment is complete, you can count how many reads are mapped to each gene. In general, genes with higher expression levels will have more reads aligned to them, resulting in higher read counts.
 
 However, raw gene-level read counts are influenced by factors such as sequencing depth and gene length, so they must be normalized before comparing expression levels across samples.
 
-<figure><img src="../.gitbook/assets/Read count.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Read count.png" alt=""><figcaption></figcaption></figure>
 
 ### Count table
 
@@ -150,170 +166,6 @@ The count table is often saved as a CSV (comma-separated values) or TSV (tab-sep
 
 You can generate this table yourself by aligning raw sequencing reads to a reference genome. However, this process can take several hours and requires substantial computational resources, so for today’s session we will download a pre-generated count table and use it as input. This is typically what you receive when you send the samples for sequencing.
 
-{% file src="../.gitbook/assets/salmon.merged.gene_counts.tsv" %}
+{% file src="../../.gitbook/assets/salmon.merged.gene_counts.tsv" %}
 
-
-
-### Running DESeq2
-
-Now, let's run differential expression analysis using an R package DESeq2.&#x20;
-
-Start by making a project directory on your desktop.
-
-```bash
-## Make project directory
-mkdir -p $HOME/projects/rnaseq
-## Change into the project directory
-cd $HOME/projects/rnaseq
-```
-
-Make `data` directory to store the count table, and `result` directory to store DESeq2 run results.
-
-```bash
-## Make subdirectories
-mkdir data
-mkdir result
-```
-
-Move the file explorer into the data directory and drag the `salmon.merged.gene_counts.tsv` file to move it into the directory. Move the file explorer back into the `rnaseq` directory and open an R notebook.
-
-<figure><img src="../.gitbook/assets/image (44).png" alt=""><figcaption></figcaption></figure>
-
-#### Install libraries
-
-We need a couple of libraries for differentially expressed genes (DEGs) identification.&#x20;
-
-```r
-## Create directory for R libraries
-dir.create(path = Sys.getenv("R_LIBS_USER"), showWarnings = FALSE, recursive = TRUE)
-```
-
-```r
-# Install BiocManager if not installed
-if (!requireNamespace("BiocManager", quietly = TRUE)) {
-  install.packages("BiocManager", lib = Sys.getenv("R_LIBS_USER"))
-}
-BiocManager::install(version = "3.22")
-library(BiocManager)
-```
-
-```r
-# Install DESeq2 if not installed
-if (!requireNamespace("DESeq2", quietly = TRUE)) {
-  BiocManager::install("DESeq2", lib = Sys.getenv("R_LIBS_USER"))
-}
-# Install org.Hs.eg.db (human gene database) if not installed
-if (!requireNamespace("org.Hs.eg.db", quietly = TRUE)) {
-  BiocManager::install("org.Hs.eg.db", lib = Sys.getenv("R_LIBS_USER"), force=TRUE)
-}
-```
-
-When the installation is complete, load the libraries `DESeq2` and `org.Hs.eg.db`.
-
-```r
-# Load the libraries
-library(DESeq2)
-library(org.Hs.eg.db)
-```
-
-#### Load data
-
-Set the count table data path as `file1`.
-
-```r
-# Set the file path
-file1 <- 'data/salmon.merged.gene_counts.tsv' 
-```
-
-using `read.csv` and&#x20;
-
-Import the count table into `count_data`
-
-
-
-```r
-# Read in raw gene count table and save it to count_data
-count_data <- read.csv(file1, sep="\t", header=TRUE)
-count_data <- count_data[!duplicated(count_data$gene_name), ]
-rownames(count_data) <- count_data$gene_name
-count_data = subset(count_data, select = -c(gene_name, gene_id))
-```
-
-Check if the count table is well imported into `count_data`.
-
-```
-head(count_data)
-```
-
-
-
-```r
-# Generate metadata (contain sample names and conditions)
-metadata <- data.frame(
-	sample = colnames(count_data),  # sample name
-	condition = sub("[0-9]+$", "", colnames(count_data)) # condition
-)
-# change rownames of metadata into sample names
-rownames(metadata) <- metadata$sample 
-```
-
-```markdown
-metadata
-```
-
-#### Run DESeq2
-
-```r
-###########################################
-## 3. Run DESeq2 pairwise (GA vs NORMAL) ##
-###########################################
-# Convert count_data into appropriate format for DESeq2 run and save to dds
-dds <- DESeqDataSetFromMatrix(countData = round(count_data), 
-                              colData = metadata, 
-                              design = ~ condition)
-# Set Control group as refrence
-dds$condition <- relevel(dds$condition, ref = "Control")    
-# Run default DEG analysis with normalization                      
-dds <- DESeq(dds)
-# Extract differential expression of ALL the genes 
-# (including the insignificant ones) to res
-res <- results(dds)
-# Omit any NA values in padj or log2FoldChange
-res <- subset(res, !is.na(padj) & !is.na(log2FoldChange))
-# Save the genes with Padj < 0.05 to sig_res (significant genes)
-sig_res <- res[res$padj < 0.05,] 
-```
-
-
-
-#### Save data
-
-```r
-name='Treated_vs_Control'
-of1 <- paste0("result/",name,"_DESeq2_Results.csv")
-write.csv(res, of1, row.names = TRUE, quote = FALSE)
-```
-
-```r
-of2 <- paste0("result/",name,"_DESeq2_Results_padj0.05.csv") 
-write.csv(sig_res, of2, row.names = TRUE, quote = FALSE)
-```
-
-
-
-##
-
-##
-
-##
-
-## 3. Visualization
-
-### Heatmap
-
-### Volcano plot
-
-
-
-
-
+Please download the file above to your local computer for the next step.
