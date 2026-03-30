@@ -7,7 +7,7 @@ We are now going to draw heatmap&#x20;
 ```r
 # Install pheatmap if not installed
 if (!requireNamespace("pheatmap", quietly = TRUE)) {
-  BiocManager::install("pheatmap", lib = Sys.getenv("R_LIBS_USER"), force=TRUE)
+  BiocManager::install("pheatmap", force=TRUE)
 }
 ```
 
@@ -77,9 +77,13 @@ pheatmap(mat_scaled,
 ### Volcano plot
 
 ```r
-# Install pheatmap if not installed
+# Install ggplot2 if not installed
 if (!requireNamespace("ggplot2", quietly = TRUE)) {
-  BiocManager::install("ggplot2", lib = Sys.getenv("R_LIBS_USER"), force=TRUE)
+  BiocManager::install("ggplot2", force=TRUE)
+}
+# Install ggrepel if not installed
+if (!requireNamespace("ggrepel", quietly = TRUE)) {
+  BiocManager::install("ggrepel", force=TRUE)
 }
 ```
 
@@ -87,6 +91,7 @@ if (!requireNamespace("ggplot2", quietly = TRUE)) {
 
 ```r
 library(ggplot2)
+library(ggrepel)
 ```
 
 

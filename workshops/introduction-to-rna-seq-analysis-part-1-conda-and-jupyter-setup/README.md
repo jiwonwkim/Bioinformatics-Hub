@@ -7,11 +7,25 @@ icon: '1'
 
 Welcome to the Bioinformatics Hub workshop! In this session, we will explore a typical RNA-seq analysis workflow and set up the computational environment needed to run it.
 
-To run the analysis, we will need an environment for running R code. For this, we will download and install [**Jupyter**](https://jupyter.org/) on your laptops. To begin, please open **Terminal (Mac)** or **PowerShell (Windows)** and type `bash` in.
+To run the analysis, we will need an environment for running R code. For this, we will download and install [Jupyter](https://jupyter.org/) on your laptops. To begin, please open **Terminal (Mac)** or **PowerShell (Windows)**.&#x20;
 
-```bash
-bash
+For Windows users, we will use Ubuntu via Windows Subsystem for Linux (WSL). Please run the following commands in PowerShell:
+
+```powershell
+# Install Ubuntu with WSL
+wsl --install -d Ubuntu-22.04
 ```
+
+Once the installation is complete, restart your system.
+
+After restarting, launch Ubuntu by running:
+
+```powershell
+# Launch Ubuntu
+wsl 
+```
+
+For more information, please refer to the following video: [YouTube link](https://www.youtube.com/watch?v=xsdsceJYcXo).
 
 ## 1. Jupyter setup
 
@@ -21,7 +35,178 @@ To install JupyterLab, you need `conda`.&#x20;
 
 Conda is a tool that helps you install and manage software and their dependencies in **isolated environments**, so different tools don’t interfere with each other.
 
-Download and install **Miniconda** from the installer from the [Conda documentation](https://docs.conda.io/projects/conda/en/latest/index.html). After installation, restart your terminal (Terminal on macOS or PowerShell on Windows).&#x20;
+Download **Miniconda** from the installer below.&#x20;
+
+* macOS: [arm64](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh) / [intel](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
+* WSL: [Linux x86](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh)
+* Find more distributions [here](https://www.anaconda.com/docs/getting-started/advanced-install/old-os#miniconda).
+
+<details>
+
+<summary>Miniconda installation for macOS (arm64)</summary>
+
+1. Change into `Downloads` directory.
+
+```bash
+cd ~/Downloads
+```
+
+2. Download the installer.
+
+```bash
+curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh
+```
+
+3. Make the script executable.
+
+```bash
+# Change permisson
+chmod +x Miniconda3-latest-MacOSX-arm64.sh
+```
+
+4. Run the script.
+
+```bash
+# Run the script
+./Miniconda3-latest-MacOSX-arm64.sh
+```
+
+5. Type `yes` to agree to the license terms.
+
+```
+Do you accept the license terms? [yes|no]
+>>> yes
+```
+
+6. Press ENTER to install miniconda on the default location.
+
+```
+Miniconda3 will now be installed into this location:
+/Users/jiwonkim/miniconda3
+
+  - Press ENTER to confirm the location
+  - Press CTRL-C to abort the installation
+  - Or specify a different location below
+
+[/Users/jiwonkim/miniconda3] >>> 
+```
+
+7. After the installation, type `yes` in to initialize conda.
+
+```
+Proceed with initialization? [yes|no]
+[yes] >>> yes
+no change     /Users/jiwonkim/miniconda3/condabin/conda
+no change     /Users/jiwonkim/miniconda3/bin/conda
+no change     /Users/jiwonkim/miniconda3/bin/conda-env
+no change     /Users/jiwonkim/miniconda3/bin/activate
+no change     /Users/jiwonkim/miniconda3/bin/deactivate
+no change     /Users/jiwonkim/miniconda3/etc/profile.d/conda.sh
+no change     /Users/jiwonkim/miniconda3/etc/fish/conf.d/conda.fish
+no change     /Users/jiwonkim/miniconda3/shell/condabin/Conda.psm1
+no change     /Users/jiwonkim/miniconda3/shell/condabin/conda-hook.ps1
+no change     /Users/jiwonkim/miniconda3/lib/python3.13/site-packages/xontrib/conda.xsh
+no change     /Users/jiwonkim/miniconda3/etc/profile.d/conda.csh
+modified      /Users/jiwonkim/.bash_profile
+
+==> For changes to take effect, close and re-open your current shell. <==
+
+Thank you for installing Miniconda3!
+```
+
+8. The installation is complete. Delete the installer script.
+
+```bash
+rm Miniconda3-latest-MacOSX-arm64.sh
+```
+
+</details>
+
+<details>
+
+<summary>Miniconda installation for Windows (WSL)</summary>
+
+1. Change the directory into `/mnt/c/Users/<username>/Downloads` to change current directory to where the installation script (`.sh`) is located. Change `<username>` into your username on your computer.
+
+```bash
+# Change directory
+cd /mnt/c/Users/<username>/Downloads
+```
+
+2. Download the installer.
+
+```bash
+# Download the installer
+curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+```
+
+3. Make the script executable.
+
+```bash
+# Change permisson
+chmod +x Miniconda3-latest-Linux-x86_64.sh
+```
+
+4. Run the script to install Miniconda3.
+
+<pre class="language-bash"><code class="lang-bash"><strong># Run the installation script
+</strong>./Miniconda3-latest-Linux-x86_64.sh
+</code></pre>
+
+5. Type `yes` to agree to the license terms.
+
+```
+Do you accept the license terms? [yes|no]
+>>> yes
+```
+
+6. Press ENTER to install miniconda on the default location.
+
+```
+Miniconda3 will now be installed into this location:
+/Users/jiwonkim/miniconda3
+
+  - Press ENTER to confirm the location
+  - Press CTRL-C to abort the installation
+  - Or specify a different location below
+
+[/Users/jiwonkim/miniconda3] >>> 
+```
+
+7. After the installation, type `yes` in to initialize conda.
+
+```
+Proceed with initialization? [yes|no]
+[yes] >>> yes
+no change     /Users/jiwonkim/miniconda3/condabin/conda
+no change     /Users/jiwonkim/miniconda3/bin/conda
+no change     /Users/jiwonkim/miniconda3/bin/conda-env
+no change     /Users/jiwonkim/miniconda3/bin/activate
+no change     /Users/jiwonkim/miniconda3/bin/deactivate
+no change     /Users/jiwonkim/miniconda3/etc/profile.d/conda.sh
+no change     /Users/jiwonkim/miniconda3/etc/fish/conf.d/conda.fish
+no change     /Users/jiwonkim/miniconda3/shell/condabin/Conda.psm1
+no change     /Users/jiwonkim/miniconda3/shell/condabin/conda-hook.ps1
+no change     /Users/jiwonkim/miniconda3/lib/python3.13/site-packages/xontrib/conda.xsh
+no change     /Users/jiwonkim/miniconda3/etc/profile.d/conda.csh
+modified      /Users/jiwonkim/.bash_profile
+
+==> For changes to take effect, close and re-open your current shell. <==
+
+Thank you for installing Miniconda3!
+```
+
+8. The installation is complete. Delete the installer script.
+
+```bash
+rm Miniconda3-latest-Linux-x86_64.sh
+```
+
+</details>
+
+
+
+After installation, **restart** your terminal (Terminal on macOS or WSL on Windows).&#x20;
 
 You should now see `(base)` at the beginning of your command line.&#x20;
 
@@ -120,51 +305,3 @@ You can type your code into the cells and press **Shift + Enter** to run it.
 * `x` → cut cell
 * `c` → copy cell
 * `v` → paste below
-
-
-
-## 2. RNA-seq Analysis: Differential Expression
-
-### Raw data
-
-#### FASTQ: Raw sequence
-
-When you sequence RNA, you typically obtain files in FASTQ format (e.g. `sample1_R1.fastq`, `sample1_R1.fastq.gz`, `sample1_R1.fq`, `sample1_R1.fq.gz`). This file format stores the raw sequencing reads along with their base quality scores.
-
-<figure><img src="../../.gitbook/assets/image (42).png" alt=""><figcaption></figcaption></figure>
-
-These files do not contain information about where the sequences originate in the genome. To determine which genes the reads come from, they must be aligned (mapped) to a reference genome.
-
-For example, think of the reference genome as a complete picture (like the Mona Lisa), and the raw reads as scattered puzzle pieces. Alignment software “assembles” these pieces by finding where each read best fits, assigning genomic coordinates and linking each read to its corresponding genomic location.
-
-<figure><img src="../../.gitbook/assets/Unaligned.png" alt=""><figcaption><p>Reference and unaligned reads</p></figcaption></figure>
-
-
-
-<figure><img src="../../.gitbook/assets/Aligned.png" alt=""><figcaption><p>Reads aligned to the reference genome</p></figcaption></figure>
-
-#### SAM/BAM: Sequence + Coordinates on genome
-
-The aligned data is stored in SAM/BAM format (e.g. `sample1.sam`, `sample1.bam`). SAM is a human-readable text format, while BAM is its compressed binary equivalent. These files contain each read’s sequence along with its alignment information, including where it maps on the reference genome.
-
-<figure><img src="../../.gitbook/assets/IGV.png" alt=""><figcaption><p>BAM file opened on IGV</p></figcaption></figure>
-
-Once the alignment is complete, you can count how many reads are mapped to each gene. In general, genes with higher expression levels will have more reads aligned to them, resulting in higher read counts.
-
-However, raw gene-level read counts are influenced by factors such as sequencing depth and gene length, so they must be normalized before comparing expression levels across samples.
-
-<figure><img src="../../.gitbook/assets/Read count.png" alt=""><figcaption></figcaption></figure>
-
-### Count table
-
-<table data-full-width="false"><thead><tr><th>gene_name</th><th>Control1</th><th>Control2</th><th>Control4</th><th>Control5</th><th>Treated1</th><th>Treated2</th><th>Treated4</th><th>Treated5</th></tr></thead><tbody><tr><td>TSPAN6</td><td>1446</td><td>1588</td><td>1114</td><td>1805</td><td>1450</td><td>1062</td><td>1111</td><td>1426</td></tr><tr><td>TNMD</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>DPM1</td><td>535</td><td>471</td><td>729</td><td>624</td><td>696</td><td>445</td><td>637</td><td>677</td></tr><tr><td>SCYL3</td><td>141</td><td>199</td><td>153</td><td>147</td><td>154</td><td>174</td><td>120</td><td>160</td></tr><tr><td>FIRRM</td><td>44</td><td>61</td><td>72</td><td>98</td><td>96</td><td>57</td><td>62</td><td>40</td></tr><tr><td>FGR</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>CFH</td><td>3477</td><td>2822</td><td>3394</td><td>3552</td><td>2186</td><td>2140</td><td>1429</td><td>1207</td></tr><tr><td>FUCA2</td><td>3403</td><td>2248</td><td>3564</td><td>3138</td><td>3533</td><td>2375</td><td>2976</td><td>2576</td></tr><tr><td>GCLC</td><td>2355</td><td>1027</td><td>659</td><td>839</td><td>733</td><td>542</td><td>1108</td><td>648</td></tr></tbody></table>
-
-Once read counting is complete, the data can be organized into a count table, where each row represents a gene and each column represents a sample (or, in single-cell RNA-seq, each column represents a cell). These are raw (absolute) gene counts across samples, and the software we will use today requires these raw counts—not normalized or scaled values—as input.
-
-The count table is often saved as a CSV (comma-separated values) or TSV (tab-separated values) file, where columns are separated by commas (`,`) or tabs, respectively.
-
-You can generate this table yourself by aligning raw sequencing reads to a reference genome. However, this process can take several hours and requires substantial computational resources, so for today’s session we will download a pre-generated count table and use it as input. This is typically what you receive when you send the samples for sequencing.
-
-{% file src="../../.gitbook/assets/salmon.merged.gene_counts.tsv" %}
-
-Please download the file above to your local computer for the next step.
