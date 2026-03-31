@@ -157,7 +157,5 @@ ggsave("result/volcano_plot_sig.png", width = 6, height = 5, dpi = 300)
 
 
 
-### Challenge: KEGG Pathway analysis
-
 
 
