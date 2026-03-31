@@ -73,7 +73,7 @@ dir.create("result")
 
 Move the file explorer into the data directory and drag the `salmon.merged.gene_counts.tsv` file to move it into the directory. Move the file explorer back into the `rnaseq` directory and open an R notebook.
 
-<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 #### Install libraries
 
@@ -195,27 +195,57 @@ With the input data prepared, we can now proceed to running DESeq2 on these data
 
 #### Run DESeq2
 
+Create a DESeq2 dataset `dds` from your raw counts and metadata. The `design = ~ condition` tells DESeq2 to compare samples based on the experimental condition.
+
 ```r
 # Convert count_data into appropriate format for DESeq2 run and save to dds
-dds <- DESeqDataSetFromMatrix(countData = round(count_data), 
+dds <- DESeqDataSetFromMatrix(countData = count_data, 
                               colData = metadata, 
                               design = ~ condition)
-# Set Control group as refrence
-dds$condition <- relevel(dds$condition, ref = "Control")    
-# Run default DEG analysis with normalization                      
-dds <- DESeq(dds)
-# Extract differential expression of ALL the genes 
-# (including the insignificant ones) to res
-res <- results(dds)
-# Omit any NA values in padj or log2FoldChange
-res <- subset(res, !is.na(padj) & !is.na(log2FoldChange))
-# Save the genes with Padj < 0.05 to sig_res (significant genes)
-sig_res <- res[res$padj < 0.05,] 
 ```
 
+Next, set **“Control”** as the baseline for comparisons. This ensures that log2 fold changes are calculated as **Treated vs Control**, so genes with positive values are **up-regulated in Treated**.
 
+```r
+# Set Control group as refrence
+dds$condition <- relevel(dds$condition, ref = "Control")   
+```
+
+&#x20;`DESeq()` performs normalization, dispersion estimation, model fitting, and the statistical test for differential expression.
+
+```r
+# Run default DEG analysis with normalization                      
+dds <- DESeq(dds)
+```
+
+Retrieve a table with **log2 fold changes**, **p-values**, and **adjusted p-values** for every gene in the dataset, and save it into `res`.
+
+```r
+# Extract differential expression of ALL the genes including the insignificant ones to res
+res <- results(dds)
+nrow(res)
+head(res)
+```
+
+Now we are going to filter for significant DEGs. As filtering doesn't work for genes where DESeq2 could not calculate statistics, we are going to drop those genes and keep only genes with an adjusted p-value below 0.05, reprensenting significantly differentially expressed genes. You can change the Padj threshold as you want.
+
+```r
+# Omit any NA values in padj or log2FoldChange
+res <- subset(res, !is.na(padj) & !is.na(log2FoldChange))
+
+# Save the genes with Padj < 0.05 to sig_res (significant genes)
+sig_res <- res[res$padj < 0.05,] 
+nrow(sig_res)
+head(sig_res)
+```
+
+How many significant DEGs did you find?
 
 #### Save data
+
+We will save the DESeq2 results so you can examine them later and download them for further analysis.
+
+Create a CSV file with the results for **all genes**, including both significant and non-significant ones.
 
 ```r
 name='Treated_vs_Control'
@@ -223,18 +253,31 @@ of1 <- paste0("result/",name,"_DESeq2_Results.csv")
 write.csv(res, of1, row.names = TRUE, quote = FALSE)
 ```
 
+Additionally, create a CSV file containing only the **significant differentially expressed genes**, which can be downloaded and opened in Excel for inspection.
+
 ```r
 of2 <- paste0("result/",name,"_DESeq2_Results_padj0.05.csv") 
 write.csv(sig_res, of2, row.names = TRUE, quote = FALSE)
 ```
 
-<figure><img src="../../.gitbook/assets/image (45).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 
-You can download the significant DEG table from `result` directory.
-
-
+You can now download the file `Treated_vs_Control_DESeq2_Results_padj0.05.csv` from the `result` directory to explore significant DEGs further.
 
 `Treated_vs_Control_DESeq2_Results_padj0.05.csv`
 
-<table data-full-width="true"><thead><tr><th>gene</th><th>baseMean</th><th>log2FoldChange</th><th>lfcSE</th><th>stat</th><th>pvalue</th><th>padj</th></tr></thead><tbody><tr><td><strong>LMCD1</strong></td><td>130.116911</td><td><strong>2.6717296</strong></td><td>0.59349932</td><td>4.50165568</td><td>6.74E-06</td><td><strong>0.00987641</strong></td></tr><tr><td><strong>EDN1</strong></td><td>78.1486286</td><td><strong>5.03592727</strong></td><td>1.17566667</td><td>4.28346522</td><td>1.84E-05</td><td><strong>0.01717116</strong></td></tr><tr><td><strong>NOX4</strong></td><td>50.8925357</td><td><strong>4.63850252</strong></td><td>0.87965212</td><td>5.27311017</td><td>1.34E-07</td><td><strong>0.0006238</strong></td></tr><tr><td><strong>DHRS2</strong></td><td>17.2594646</td><td><strong>4.02682742</strong></td><td>0.92447889</td><td>4.35578084</td><td>1.33E-05</td><td><strong>0.01425229</strong></td></tr><tr><td><strong>MMP15</strong></td><td>1628.26954</td><td><strong>0.69259116</strong></td><td>0.16609922</td><td>4.16974346</td><td>3.05E-05</td><td><strong>0.02390385</strong></td></tr><tr><td><strong>XYLT1</strong></td><td>1624.5707</td><td><strong>2.4763288</strong></td><td>0.58203059</td><td>4.25463684</td><td>2.09E-05</td><td><strong>0.01865176</strong></td></tr></tbody></table>
+<table data-full-width="true"><thead><tr><th width="128">gene</th><th>baseMean</th><th>log2FoldChange</th><th>lfcSE</th><th>stat</th><th>pvalue</th><th>padj</th></tr></thead><tbody><tr><td><strong>LMCD1</strong></td><td>130.116911</td><td><strong>2.6717296</strong></td><td>0.59349932</td><td>4.50165568</td><td>6.74E-06</td><td><strong>0.00987641</strong></td></tr><tr><td><strong>EDN1</strong></td><td>78.1486286</td><td><strong>5.03592727</strong></td><td>1.17566667</td><td>4.28346522</td><td>1.84E-05</td><td><strong>0.01717116</strong></td></tr><tr><td><strong>NOX4</strong></td><td>50.8925357</td><td><strong>4.63850252</strong></td><td>0.87965212</td><td>5.27311017</td><td>1.34E-07</td><td><strong>0.0006238</strong></td></tr><tr><td><strong>DHRS2</strong></td><td>17.2594646</td><td><strong>4.02682742</strong></td><td>0.92447889</td><td>4.35578084</td><td>1.33E-05</td><td><strong>0.01425229</strong></td></tr><tr><td><strong>MMP15</strong></td><td>1628.26954</td><td><strong>0.69259116</strong></td><td>0.16609922</td><td>4.16974346</td><td>3.05E-05</td><td><strong>0.02390385</strong></td></tr><tr><td><strong>XYLT1</strong></td><td>1624.5707</td><td><strong>2.4763288</strong></td><td>0.58203059</td><td>4.25463684</td><td>2.09E-05</td><td><strong>0.01865176</strong></td></tr></tbody></table>
 
+* baseMean
+  * The **average normalized count** for a gene across all samples, after accounting for sequencing depth.
+* **log2FoldChange**
+  * The **log2-transformed ratio** of expression between two conditions (e.g., Treated vs Control).
+  * Positive values → gene is up-regulated in Treated; negative → down-regulated.
+* lfcSE
+  * The **standard error of the log2 fold change** estimate.
+* stat
+  * The **Wald statistic**: the log2 fold change divided by its standard error.
+* p-value
+  * The raw **p-value** from the statistical test, indicating how likely the observed change is due to chance.
+* **padj**
+  * The **adjusted p-value** (e.g., Benjamini-Hochberg correction) that accounts for multiple testing.

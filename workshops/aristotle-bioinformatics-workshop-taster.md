@@ -35,7 +35,7 @@ Open **Windows PowerShell** as administrator.
 
 <div align="left"><figure><img src="../.gitbook/assets/image (3).png" alt="" width="375"><figcaption></figcaption></figure></div>
 
-<div align="left"><figure><img src="../.gitbook/assets/image (2).png" alt="" width="289"><figcaption></figcaption></figure></div>
+<div align="left"><figure><img src="../.gitbook/assets/image (2) (1).png" alt="" width="289"><figcaption></figcaption></figure></div>
 
 <figure><img src="../.gitbook/assets/image (4).png" alt="" width="563"><figcaption></figcaption></figure>
 {% endtab %}
@@ -43,7 +43,7 @@ Open **Windows PowerShell** as administrator.
 {% tab title="macOS" %}
 Open **Terminal**.
 
-<div align="left" data-full-width="true"><figure><img src="../.gitbook/assets/image (1).png" alt="" width="178"><figcaption></figcaption></figure></div>
+<div align="left" data-full-width="true"><figure><img src="../.gitbook/assets/image (2).png" alt="" width="178"><figcaption></figcaption></figure></div>
 
 <figure><img src="../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
 {% endtab %}
