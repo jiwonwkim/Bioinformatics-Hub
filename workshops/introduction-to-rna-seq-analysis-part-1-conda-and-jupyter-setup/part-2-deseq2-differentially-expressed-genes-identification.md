@@ -44,7 +44,7 @@ You can generate this table yourself by aligning raw sequencing reads to a refer
 
 {% file src="../../.gitbook/assets/salmon.merged.gene_counts.tsv" %}
 
-Please download the file above to your local computer for the next step.
+Please download the file above to your local computer for the next step. Please refer to [this paper](https://www.mdpi.com/2218-273X/12/11/1693#Data_Availability_Statement) if you want to read more about the samples.
 
 
 
@@ -241,7 +241,7 @@ head(sig_res)
 
 How many significant DEGs did you find?
 
-#### Save data
+#### Save results
 
 We will save the DESeq2 results so you can examine them later and download them for further analysis.
 
