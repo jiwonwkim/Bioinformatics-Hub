@@ -43,7 +43,7 @@ Open **Windows PowerShell** as administrator.
 {% tab title="macOS" %}
 Open **Terminal**.
 
-<div align="left" data-full-width="true"><figure><img src="../.gitbook/assets/image.png" alt="" width="178"><figcaption></figcaption></figure></div>
+<div align="left" data-full-width="true"><figure><img src="../.gitbook/assets/image (1).png" alt="" width="178"><figcaption></figcaption></figure></div>
 
 <figure><img src="../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
 {% endtab %}

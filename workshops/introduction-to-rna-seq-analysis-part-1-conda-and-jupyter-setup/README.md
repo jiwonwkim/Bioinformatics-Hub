@@ -45,10 +45,10 @@ Download **Miniconda** from the installer below.&#x20;
 
 <summary>Miniconda installation for macOS (arm64)</summary>
 
-1. Change into `Downloads` directory.
+1. Change into home directory.
 
 ```bash
-cd ~/Downloads
+cd ~
 ```
 
 2. Download the installer.
@@ -126,11 +126,11 @@ rm Miniconda3-latest-MacOSX-arm64.sh
 
 <summary>Miniconda installation for Windows (WSL)</summary>
 
-1. Change the directory into `/mnt/c/Users/<username>/Downloads` to change current directory to where the installation script (`.sh`) is located. Change `<username>` into your username on your computer.
+1. Change the directory into `/mnt/c/Users/<username>` to change current directory to the home directory. Change `<username>` into your username on your computer.
 
 ```bash
 # Change directory
-cd /mnt/c/Users/<username>/Downloads
+cd /mnt/c/Users/<username>
 ```
 
 2. Download the installer.
@@ -204,8 +204,6 @@ rm Miniconda3-latest-Linux-x86_64.sh
 
 </details>
 
-
-
 After installation, **restart** your terminal (Terminal on macOS or WSL on Windows).&#x20;
 
 You should now see `(base)` at the beginning of your command line.&#x20;
@@ -213,6 +211,13 @@ You should now see `(base)` at the beginning of your command line.&#x20;
 <figure><img src="../../.gitbook/assets/image (32).png" alt=""><figcaption></figcaption></figure>
 
 This indicates that Conda is installed and the base environment is active.
+
+Enter the following commands to agree to Terms of Service.
+
+```bash
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
+```
 
 ### Create a new environment for JupyterLab
 

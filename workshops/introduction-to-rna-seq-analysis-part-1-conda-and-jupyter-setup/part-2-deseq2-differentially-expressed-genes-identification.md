@@ -50,46 +50,47 @@ Please download the file above to your local computer for the next step.
 
 ### Running DESeq2
 
+#### Set project directory
+
 Now, let's run differential expression analysis using an R package DESeq2.&#x20;
 
-Start by making a project directory on your desktop.
-
-```bash
-## Make project directory
-mkdir -p $HOME/projects/rnaseq
-## Change into the project directory
-cd $HOME/projects/rnaseq
-```
-
-Make `data` directory to store the count table, and `result` directory to store DESeq2 run results.
-
-```bash
-## Make subdirectories
-mkdir data
-mkdir result
-```
-
-Move the file explorer into the data directory and drag the `salmon.merged.gene_counts.tsv` file to move it into the directory. Move the file explorer back into the `rnaseq` directory and open an R notebook.
-
-<figure><img src="../../.gitbook/assets/image (44).png" alt=""><figcaption></figcaption></figure>
-
-Set the working directory.
+Start by opening an R notebook and creating a project directory on your desktop.
 
 ```r
+## Make project directory
+dir.create("~/projects/rnaseq", recursive = TRUE)
 # Set working directory
 setwd("~/projects/rnaseq")
 ```
 
+Make `data` directory to store the count table, and `result` directory to store DESeq2 run results.
+
+```r
+## Make subdirectories
+dir.create("data")
+dir.create("result")
+```
+
+Move the file explorer into the data directory and drag the `salmon.merged.gene_counts.tsv` file to move it into the directory. Move the file explorer back into the `rnaseq` directory and open an R notebook.
+
+<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+
 #### Install libraries
 
-We need a couple of libraries for differentially expressed genes (DEGs) identification.&#x20;
+We will install a few R packages required for differential expression analysis.
+
+First, create a directory for user-installed R packages (if it does not already exist), and ensure R uses this location:
 
 ```r
 # Create directory for R libraries
 dir.create(path = Sys.getenv("R_LIBS_USER"), showWarnings = FALSE, recursive = TRUE)
+# Set library path
+.libPaths(Sys.getenv("R_LIBS_USER"))
 ```
 
-**BiocManager** is an R package that provides a simple and reliable way to install and manage Bioconductor packages and their dependencies. Install and load BiocManager if not already installed using the code below.
+Next, install and load BiocManager if not already installed using the code below.&#x20;
+
+**BiocManager** is an R package that provides a simple and reliable way to install and manage Bioconductor packages and their dependencies.&#x20;
 
 ```r
 # Install BiocManager if not installed
@@ -123,40 +124,55 @@ library(DESeq2)
 library(org.Hs.eg.db)
 ```
 
-Now that the libraries are ready, we can begin **differential expression analysis (DEG identification)**.
+Now that the required libraries are installed and loaded, we can begin differential expression analysis.
 
-#### Load the data
+#### Load data
 
-Set the path to your count table file:
+We need two inputs for running DESeq2: `count_data` and `metadata`. They must be in the exact format required by DESeq2.
+
+**Count data**
+
+First, set the **file path** of your **count table**:
 
 ```r
 # Set the file path
 file1 <- 'data/salmon.merged.gene_counts.tsv' 
 ```
 
-\-------------------------------------------------------------
-
-using `read.csv` and&#x20;
-
-Import the count table into `count_data`
-
-
+Using `read.csv` and, import the count table into `count_data`:
 
 ```r
 # Read in raw gene count table and save it to count_data
 count_data <- read.csv(file1, sep="\t", header=TRUE)
-count_data <- count_data[!duplicated(count_data$gene_name), ]
-rownames(count_data) <- count_data$gene_name
-count_data = subset(count_data, select = -c(gene_name, gene_id))
-```
-
-Check if the count table is well imported into `count_data`.
-
-```
+nrow(count_data)
 head(count_data)
 ```
 
+Since there are some pseudogenes that are duplicated in the dataset, we will remove duplicates; DESeq2 does not allow this in the input file:
 
+```r
+count_data <- count_data[!duplicated(count_data$gene_name), ]
+nrow(count_data)
+head(count_data)
+```
+
+Next, change the row names of the table to `gene_name` to match DESeq2 input format:
+
+```r
+rownames(count_data) <- count_data$gene_name
+head(count_data)
+```
+
+Finally, remove the `gene_name` and `gene_id` columns to complete the input format:
+
+```r
+count_data = subset(count_data, select = -c(gene_name, gene_id))
+head(count_data)
+```
+
+**Metadata**
+
+We also need metadata, which specifies each sample’s condition (treated or control). In this example, since the sample names are `Control1`, `Treated1`, etc., we will remove the number at the end to create the condition information:
 
 ```r
 # Generate metadata (contain sample names and conditions)
@@ -164,20 +180,22 @@ metadata <- data.frame(
 	sample = colnames(count_data),  # sample name
 	condition = sub("[0-9]+$", "", colnames(count_data)) # condition
 )
-# change rownames of metadata into sample names
-rownames(metadata) <- metadata$sample 
-```
-
-```markdown
 metadata
 ```
+
+Next, set the row names to the sample names, as required by DESeq2:
+
+```r
+# change rownames of metadata into sample names
+rownames(metadata) <- metadata$sample 
+metadata
+```
+
+With the input data prepared, we can now proceed to running DESeq2 on these data.
 
 #### Run DESeq2
 
 ```r
-###########################################
-## 3. Run DESeq2 pairwise (GA vs NORMAL) ##
-###########################################
 # Convert count_data into appropriate format for DESeq2 run and save to dds
 dds <- DESeqDataSetFromMatrix(countData = round(count_data), 
                               colData = metadata, 
