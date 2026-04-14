@@ -1,26 +1,20 @@
-# Part 3: Visualization
+# Part 3: Visualizationm
 
 ### Heatmap
 
 We will now generate a heatmap to visualize expression patterns of significant genes across samples.
 
-Install and load the `pheatmap` package, which is used to draw heatmaps in R.
+Load the `pheatmap` package, which is used to draw heatmaps in R.
 
 ```r
-# Install pheatmap if not installed
-if (!requireNamespace("pheatmap", quietly = TRUE)) {
-  BiocManager::install("pheatmap", force=TRUE)
-}
-```
-
-```
+# 3.1 Load pheatmap
 library(pheatmap)
 ```
 
 Extract the names of significantly differentially expressed genes from the results table.
 
 ```r
-# Get significant gene names
+# 3.2 Get significant gene names
 sig_genes <- rownames(sig_res)
 sig_genes
 ```
@@ -28,7 +22,7 @@ sig_genes
 Select only the significant genes from the count matrix for visualization.
 
 ```r
-# Extract the significant genes from the raw count data table
+# 3.3 Extract the significant genes from the raw count data table
 mat <- count_data
 mat
 ```
@@ -36,7 +30,7 @@ mat
 Apply variance stabilizing transformation (`vst()`) to normalize the data and reduce dependence on sequencing depth.
 
 ```r
-# Normalize the raw counts
+# 3.4 Normalize the raw counts
 vsd <- vst(dds, blind = FALSE)
 mat_norm <- assay(vsd)[sig_genes, ]
 mat_norm
@@ -45,7 +39,7 @@ mat_norm
 Scale each gene across samples so that differences in expression patterns are easier to visualize.
 
 ```r
-# Scale the normalized data
+# 3.5 Scale the normalized data
 mat_scaled <- t(scale(t(mat_norm)))
 mat_scaled
 ```
@@ -53,7 +47,7 @@ mat_scaled
 Generate a heatmap with clustering for both genes and samples.
 
 ```r
-# Draw heatmap
+# 3.6 Plot a heatmap
 pheatmap(mat_scaled,
          cluster_rows = TRUE, # genees
          cluster_cols = TRUE, # samples
@@ -65,6 +59,7 @@ pheatmap(mat_scaled,
 To save the heatmap in a png format, simply add `filename = 'result/heatmap_sig.png'` option.
 
 ```r
+# 3.7 Plot a heatmap and save it into a png file
 pheatmap(mat_scaled,
          cluster_rows = TRUE,
          cluster_cols = TRUE,
@@ -80,20 +75,10 @@ You can download the heatmap from `result` directory.
 
 We will create a volcano plot to visualize differential expression results, highlighting significant genes.
 
-Install and load packages for plotting (`ggplot2`) and for adding non-overlapping labels (`ggrepel`).
+Load packages for plotting (`ggplot2`) and for adding non-overlapping labels (`ggrepel`).
 
 ```r
-# Install ggplot2 if not installed
-if (!requireNamespace("ggplot2", quietly = TRUE)) {
-  BiocManager::install("ggplot2", force=TRUE)
-}
-# Install ggrepel if not installed
-if (!requireNamespace("ggrepel", quietly = TRUE)) {
-  BiocManager::install("ggrepel", force=TRUE)
-}
-```
-
-```r
+# 3.8 Load libraries
 library(ggplot2)
 library(ggrepel)
 ```
@@ -101,19 +86,24 @@ library(ggrepel)
 Classify genes into “Up”, “Down”, or “Not Sig” based on adjusted p-value and fold change thresholds and add it as a column in `res`.
 
 ```r
-# Set default as "Not Sig"
+# 3.9 Add a column called "significance" and add significance information of each gene
+
+## Set default as "Not Sig"
 res$significance <- "Not Sig"
-# Mark as "Up" if padj < 0.05 and log2FC > 1
+
+## Mark as "Up" if padj < 0.05 and log2FC > 1
 res$significance[res$padj < 0.05 & res$log2FoldChange > 1] <- "Up"
-# Mark as "Down" if padj < 0.05 and log2FC < -1
+
+## Mark as "Down" if padj < 0.05 and log2FC < -1
 res$significance[res$padj < 0.05 & res$log2FoldChange < -1] <- "Down"
 head(res)
+head(res[res$significance == "Up",])
 ```
 
 Plot fold change against statistical significance, with colors indicating gene categories and dashed lines showing thresholds.
 
 ```r
-# Plot volcano plot
+# 3.10 Plot a volcano plot
 ggplot(res, aes(x = log2FoldChange, y = -log10(padj), color = significance)) +
   geom_point(alpha = 0.7) +
   scale_color_manual(values = c("blue", "grey", "red")) +
@@ -127,7 +117,7 @@ ggplot(res, aes(x = log2FoldChange, y = -log10(padj), color = significance)) +
 Select the most significant genes (lowest adjusted p-values) and stores their names for labeling on the plot. In this example, all the genes with padj < 0.05 was used, but you can change the number of genes you want to show label of by changing `nrow(sig_res)` into the desired number.
 
 ```r
-# Get the list of genes with padj < 0.05 for labeling
+# 3.11 Get the list of genes with padj < 0.05 for labeling
 top <- res[order(res$padj), ][1:nrow(sig_res), ]
 top$gene <- rownames(top)
 ```
@@ -135,7 +125,7 @@ top$gene <- rownames(top)
 Add labels to the genes with padj < 0.05 while preventing overlap, making key genes easier to identify.
 
 ```r
-# Plot volcano plot with the significant genes label
+# 3.12 Plot volcano plot with the significant genes label
 ggplot(res, aes(x = log2FoldChange, y = -log10(padj), color = significance)) +
   geom_point(alpha = 0.7) +
   scale_color_manual(values = c("blue", "grey", "red")) +
@@ -151,11 +141,23 @@ ggplot(res, aes(x = log2FoldChange, y = -log10(padj), color = significance)) +
 Save the volcano plot in the `result` directory.
 
 ```r
-# Save the volcano plot
+# 3.13 Save the volcano plot
 ggsave("result/volcano_plot_sig.png", width = 6, height = 5, dpi = 300)
 ```
 
 
 
+Well done! You can find the tables and plots you genereated in the `projects/rnaseq/result` directory.
 
+<figure><img src="../../.gitbook/assets/image (63).png" alt=""><figcaption></figcaption></figure>
+
+Also, don't forget to save the notebook for reproducibility.
+
+```
+projects/rnaseq/deseq2_workshop.ipynb
+```
+
+<figure><img src="../../.gitbook/assets/image (61).png" alt=""><figcaption></figcaption></figure>
+
+<figure><img src="../../.gitbook/assets/image (62).png" alt=""><figcaption></figcaption></figure>
 

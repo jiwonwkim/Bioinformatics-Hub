@@ -57,7 +57,7 @@ Now, let's run differential expression analysis using an R package DESeq2.&#x20;
 Start by opening an R notebook and creating a project directory on your desktop.
 
 ```r
-## Make project directory
+# 2.1 Make project directory
 dir.create("~/projects/rnaseq", recursive = TRUE)
 # Set working directory
 setwd("~/projects/rnaseq")
@@ -66,7 +66,7 @@ setwd("~/projects/rnaseq")
 Make `data` directory to store the count table, and `result` directory to store DESeq2 run results.
 
 ```r
-## Make subdirectories
+# 2.2 Make subdirectories
 dir.create("data")
 dir.create("result")
 ```
@@ -75,56 +75,16 @@ Move the file explorer into the data directory and drag the `salmon.merged.gene_
 
 <figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
-#### Install libraries
+#### Load libraries
 
-We will install a few R packages required for differential expression analysis.
-
-First, create a directory for user-installed R packages (if it does not already exist), and ensure R uses this location:
+We will use it to install **DESeq2**, which is a package for differential expression analysis. Please load the `DESeq2` library.
 
 ```r
-# Create directory for R libraries
-dir.create(path = Sys.getenv("R_LIBS_USER"), showWarnings = FALSE, recursive = TRUE)
-# Set library path
-.libPaths(Sys.getenv("R_LIBS_USER"))
-```
-
-Next, install and load BiocManager if not already installed using the code below.&#x20;
-
-**BiocManager** is an R package that provides a simple and reliable way to install and manage Bioconductor packages and their dependencies.&#x20;
-
-```r
-# Install BiocManager if not installed
-if (!requireNamespace("BiocManager", quietly = TRUE)) {
-  install.packages("BiocManager")
-}
-BiocManager::install(version = "3.22")
-
-# Load BiocManager
-library(BiocManager)
-```
-
-Now that BiocManager is installed, we will use it to install **DESeq2** and **org.Hs.eg.db**, which are, respectively, a package for differential expression analysis and a human gene annotation database. Similar to what we did before, please install these libraries on your system.
-
-```r
-# Install DESeq2 if not installed
-if (!requireNamespace("DESeq2", quietly = TRUE)) {
-  BiocManager::install("DESeq2")
-}
-# Install org.Hs.eg.db (human gene database) if not installed
-if (!requireNamespace("org.Hs.eg.db", quietly = TRUE)) {
-  BiocManager::install("org.Hs.eg.db", force=TRUE)
-}
-```
-
-Once the installation is complete, load the `DESeq2` and `org.Hs.eg.db` libraries.
-
-```r
-# Load the libraries
+# 2.3 Load the library
 library(DESeq2)
-library(org.Hs.eg.db)
 ```
 
-Now that the required libraries are installed and loaded, we can begin differential expression analysis.
+Now that the required library is loaded, we can begin differential expression analysis.
 
 #### Load data
 
@@ -135,14 +95,14 @@ We need two inputs for running DESeq2: `count_data` and `metadata`. They must be
 First, set the **file path** of your **count table**:
 
 ```r
-# Set the file path
+# 2.4 Set the file path
 file1 <- 'data/salmon.merged.gene_counts.tsv' 
 ```
 
 Using `read.csv` and, import the count table into `count_data`:
 
 ```r
-# Read in raw gene count table and save it to count_data
+# 2.5 Read in raw gene count table and save it to count_data
 count_data <- read.csv(file1, sep="\t", header=TRUE)
 nrow(count_data)
 head(count_data)
@@ -151,6 +111,7 @@ head(count_data)
 Since there are some pseudogenes that are duplicated in the dataset, we will remove duplicates; DESeq2 does not allow this in the input file:
 
 ```r
+# 2.6 Remove duplicate gene names from count_data
 count_data <- count_data[!duplicated(count_data$gene_name), ]
 nrow(count_data)
 head(count_data)
@@ -159,6 +120,7 @@ head(count_data)
 Next, change the row names of the table to `gene_name` to match DESeq2 input format:
 
 ```r
+# 2.7 Set the row names of count_data into gene names
 rownames(count_data) <- count_data$gene_name
 head(count_data)
 ```
@@ -166,6 +128,7 @@ head(count_data)
 Finally, remove the `gene_name` and `gene_id` columns to complete the input format:
 
 ```r
+# 2.8 Remove gene_name and gene_id columns
 count_data = subset(count_data, select = -c(gene_name, gene_id))
 head(count_data)
 ```
@@ -175,7 +138,7 @@ head(count_data)
 We also need metadata, which specifies each sample’s condition (treated or control). In this example, since the sample names are `Control1`, `Treated1`, etc., we will remove the number at the end to create the condition information:
 
 ```r
-# Generate metadata (contain sample names and conditions)
+# 2.9 Generate metadata (contain sample names and conditions)
 metadata <- data.frame(
 	sample = colnames(count_data),  # sample name
 	condition = sub("[0-9]+$", "", colnames(count_data)) # condition
@@ -186,7 +149,7 @@ metadata
 Next, set the row names to the sample names, as required by DESeq2:
 
 ```r
-# change rownames of metadata into sample names
+# 2.10 Change rownames of metadata into sample names
 rownames(metadata) <- metadata$sample 
 metadata
 ```
@@ -198,7 +161,7 @@ With the input data prepared, we can now proceed to running DESeq2 on these data
 Create a DESeq2 dataset `dds` from your raw counts and metadata. The `design = ~ condition` tells DESeq2 to compare samples based on the experimental condition.
 
 ```r
-# Convert count_data into appropriate format for DESeq2 run and save to dds
+# 2.11 Convert count_data into appropriate format for DESeq2 run and save to dds
 dds <- DESeqDataSetFromMatrix(countData = count_data, 
                               colData = metadata, 
                               design = ~ condition)
@@ -207,21 +170,22 @@ dds <- DESeqDataSetFromMatrix(countData = count_data,
 Next, set **“Control”** as the baseline for comparisons. This ensures that log2 fold changes are calculated as **Treated vs Control**, so genes with positive values are **up-regulated in Treated**.
 
 ```r
-# Set Control group as refrence
+# 2.12 Set Control group as refrence
 dds$condition <- relevel(dds$condition, ref = "Control")   
 ```
 
 &#x20;`DESeq()` performs normalization, dispersion estimation, model fitting, and the statistical test for differential expression.
 
 ```r
-# Run default DEG analysis with normalization                      
+# 2.13 Run default DEG analysis with normalization                      
 dds <- DESeq(dds)
 ```
 
 Retrieve a table with **log2 fold changes**, **p-values**, and **adjusted p-values** for every gene in the dataset, and save it into `res`.
 
 ```r
-# Extract differential expression of ALL the genes including the insignificant ones to res
+# 2.14 Extract differential expression of ALL genes
+# including the insignificant ones to res
 res <- results(dds)
 nrow(res)
 head(res)
@@ -230,10 +194,14 @@ head(res)
 Now we are going to filter for significant DEGs. As filtering doesn't work for genes where DESeq2 could not calculate statistics, we are going to drop those genes and keep only genes with an adjusted p-value below 0.05, reprensenting significantly differentially expressed genes. You can change the Padj threshold as you want.
 
 ```r
-# Omit any NA values in padj or log2FoldChange
+# 2.15 Omit any NA values in padj or log2FoldChange
 res <- subset(res, !is.na(padj) & !is.na(log2FoldChange))
+nrow(res)
+head(res)
+```
 
-# Save the genes with Padj < 0.05 to sig_res (significant genes)
+```r
+# 2.16 Save the genes with Padj < 0.05 to sig_res (significant genes)
 sig_res <- res[res$padj < 0.05,] 
 nrow(sig_res)
 head(sig_res)
@@ -248,6 +216,7 @@ We will save the DESeq2 results so you can examine them later and download them 
 Create a CSV file with the results for **all genes**, including both significant and non-significant ones.
 
 ```r
+# 2.17 Create a csv file with all genes' DE information
 name='Treated_vs_Control'
 of1 <- paste0("result/",name,"_DESeq2_Results.csv")
 write.csv(res, of1, row.names = TRUE, quote = FALSE)
@@ -256,6 +225,7 @@ write.csv(res, of1, row.names = TRUE, quote = FALSE)
 Additionally, create a CSV file containing only the **significant differentially expressed genes**, which can be downloaded and opened in Excel for inspection.
 
 ```r
+# 2.18 Create a csv file with significant genes' DE information only
 of2 <- paste0("result/",name,"_DESeq2_Results_padj0.05.csv") 
 write.csv(sig_res, of2, row.names = TRUE, quote = FALSE)
 ```
