@@ -322,6 +322,19 @@ You can type your code into the cells and press **Shift + Enter** to run it.
 
 #### JupyterLab interface
 
+If you don't have a UCL account, install the environment directly install JupyterLab to your laptop.
+
+```bash
+# Create a conda environment
+conda create -n deseq2 -c conda-forge r-base r-irkernel r-essentials jupyterlab -y
+conda activate deseq2
+```
+
+```bash
+# Launch JupyterLab
+jupyter lab
+```
+
 You should now see the JupyterLab home page.
 
 * The **left panel** is the file explorer
