@@ -5,6 +5,8 @@ icon: '1'
 
 # Introduction to RNA-seq Analysis Part 1: Conda & Jupyter setup
 
+[CodiMD](https://codimd.carpentries.org/qlTLOaT-Rk-bcWiHNoZnFA?view)
+
 Welcome to the Bioinformatics Hub workshop! In this session, we will explore a typical RNA-seq analysis workflow and set up the computational environment needed to run it.
 
 To run the analysis, we will need an environment for running R code. For this, we will download and install [Jupyter](https://jupyter.org/) on your UCL JupyterHub.&#x20;
@@ -21,7 +23,7 @@ You will be asked to log in - Please use your UCL ID and password to log in.
 
 Once you're successfully logged in, you will see Files tab as default.
 
-Click New and select Terminal to open a new terminal, where we'll be working on today.
+Click **New** and select **Terminal** to open a new terminal, where we'll be working on to set up Miniconda.
 
 <figure><img src="../../.gitbook/assets/image (50).png" alt=""><figcaption></figcaption></figure>
 
@@ -31,9 +33,9 @@ Please remember you can't use the mouse on this screen - anything you typed in c
 
 Now, let's begin installation on this screen.
 
-## 1. Jupyter setup
 
 
+## 1. Miniconda setup
 
 ### Install Miniconda
 
@@ -326,7 +328,31 @@ If you don't have a UCL account, install the environment directly install Jupyte
 
 ```bash
 # Create a conda environment
-conda create -n deseq2 -c conda-forge r-base r-irkernel r-essentials jupyterlab -y
+conda create -n deseq2 -c conda-forge -c bioconda \
+  r-base \
+  r-irkernel \
+  r-essentials \
+  r-biocmanager \
+  r-ggplot2 \
+  r-ggrepel \
+  r-pheatmap \
+  bioconductor-biobase \
+  bioconductor-biocgenerics \
+  bioconductor-genomeinfodb \
+  bioconductor-genomicranges \
+  bioconductor-iranges \
+  bioconductor-matrixgenerics \
+  bioconductor-s4vectors \
+  bioconductor-delayedarray \
+  bioconductor-sparsearray \
+  bioconductor-biocparallel \
+  bioconductor-deseq2 \
+  jupyterlab \
+  nodejs -y
+```
+
+```bash
+# Activate the environment
 conda activate deseq2
 ```
 
