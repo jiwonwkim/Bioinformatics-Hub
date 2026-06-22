@@ -2,6 +2,27 @@
 icon: hand-wave
 cover: .gitbook/assets/Logo_BRC.png
 coverY: 0
+layout:
+  width: default
+  cover:
+    visible: true
+    size: full
+  title:
+    visible: true
+  description:
+    visible: false
+  tableOfContents:
+    visible: true
+  outline:
+    visible: true
+  pagination:
+    visible: true
+  metadata:
+    visible: true
+  tags:
+    visible: true
+  actions:
+    visible: true
 ---
 
 # Welcome
@@ -20,5 +41,5 @@ If you’re still having trouble following the instructions, please feel free to
 
 ### Quick Start Guide
 
-<table data-view="cards"><thead><tr><th></th><th></th><th data-hidden data-card-cover data-type="files"></th><th data-hidden></th><th data-hidden data-card-target data-type="content-ref"></th></tr></thead><tbody><tr><td><strong>Getting Started</strong></td><td>Set up your first bioinformatic environment </td><td></td><td></td><td><a href="/broken/pages/Zvukm7MAGL6ooitMTmpY">Broken link</a></td></tr><tr><td><strong>Learning File Formats</strong></td><td>Learn the basic file formats</td><td></td><td></td><td><a href="handling-files/integrations.md">integrations.md</a></td></tr><tr><td><strong>Using Nextflow Pipelines</strong></td><td>Use validated pipelines to run your analysis</td><td></td><td></td><td><a href="running-nextflow/understanding-nf-core.md">understanding-nf-core.md</a></td></tr></tbody></table>
+<table data-view="cards"><thead><tr><th></th><th></th><th data-hidden data-card-cover data-type="files"></th><th data-hidden></th><th data-hidden data-card-target data-type="content-ref"></th></tr></thead><tbody><tr><td><strong>Getting Started</strong></td><td>Set up your first bioinformatic environment </td><td></td><td></td><td><a href="https://app.gitbook.com/s/DE8uIHF5mILKd1wvDn7f/getting-started">Getting Started</a></td></tr><tr><td><strong>Learning File Formats</strong></td><td>Learn the basic file formats</td><td></td><td></td><td><a href="handling-files/integrations.md">integrations.md</a></td></tr><tr><td><strong>Using Nextflow Pipelines</strong></td><td>Use validated pipelines to run your analysis</td><td></td><td></td><td><a href="running-nextflow/understanding-nf-core.md">understanding-nf-core.md</a></td></tr></tbody></table>
 
