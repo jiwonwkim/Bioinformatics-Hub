@@ -10,13 +10,13 @@ icon: '2'
 
 Today, we will learn how to align raw RNA-seq reads to a reference genome and quantify gene expression levels.
 
-Before we begin, we need several files required for the analysis. Some files are small, while others can be quite large, so this step may take some time.
+Before we begin, we need several files required for the analysis. Some files are small, while others can be quite large.
 
 ### Required files
 
-Before we begin, we have to download some (or a lot of) files.
-
 Let's start by looking into the files we need today.
+
+
 
 First, let's look at the input files we will use today:
 
