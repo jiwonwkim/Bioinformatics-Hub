@@ -1,6 +1,5 @@
 ---
 description: 14 Jul 2026
-hidden: true
 icon: '2'
 ---
 
