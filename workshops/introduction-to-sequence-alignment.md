@@ -606,8 +606,7 @@ p1 <- EnhancedVolcano(res_df,
     y = 'padj',
     pCutoff = 0.05,
     FCcutoff = 1.0,
-
-    # --- The Fixes ---
+    
     selectLab = top_genes,          # ONLY draw text labels for these top 10 genes
     drawConnectors = TRUE,          # Draws lines from the dot to the text label
     widthConnectors = 0.5,          # Thin connector lines
@@ -712,7 +711,6 @@ p2 <- EnhancedVolcano(res_df,
     pCutoff = 0.05,
     FCcutoff = 1.0,
 
-    # --- The Fixes ---
     selectLab = top_genes,          # ONLY draw text labels for these top 10 genes
     drawConnectors = TRUE,          # Draws lines from the dot to the text label
     widthConnectors = 0.5,          # Thin connector lines
