@@ -339,12 +339,13 @@ For 6 samples, you should see:
 
 ```bash
 %%bash
-# 4-5. List all generated BAM and index files
+# 4-4. List all generated BAM and index files
 ls /home/projects/alignment/data/bam
 
-# 4-6. Check the contents of a BAM file
+# 4-5. Check the contents of a BAM file
 # samtools view converts BAM back into readable alignment text
 # tail shows the last few alignment records
+SRR="SRR21709666"
 samtools view /home/projects/alignment/data/bam/${SRR}.bam | tail
 ```
 
@@ -372,12 +373,12 @@ Run featureCounts to quantify gene expression.&#x20;
 %%bash
 # 5-2. Use the bam files to quantify gene expression levels
 featureCounts \
-  -T 4 \  ## Use 4 CPU threads 
-  -p \    ## Data is paired-end sequencing 
-  -g gene_name \  ## Summarise reads using gene names
-  -a /home/reference/gencode.v50.basic.annotation.gtf.gz \ ## Provide GENCODE annotation file 
-  -o /home/projects/alignment/result/featureCounts/merged_counts.txt \ ## Output count matrix location
-  /home/projects/alignment/data/bam/*.bam  ## Read all the bam files created
+  -T 4 \
+  -p \
+  -g gene_name \
+  -a /home/reference/gencode.v50.basic.annotation.gtf.gz \
+  -o /home/projects/alignment/result/featureCounts/merged_counts.txt \
+  /home/projects/alignment/data/bam/*.bam  
 ```
 
 
