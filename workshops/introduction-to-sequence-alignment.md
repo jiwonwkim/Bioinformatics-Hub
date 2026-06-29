@@ -307,17 +307,17 @@ The loop:
 
 ```bash
 %%bash
-# 4-3. For all the samples, run alignment (takes about 20 mins)
+# 4-2. For all the samples, run alignment (takes about 20 mins)
 while read SRR; do
 echo "Aligning "${SRR}"..."
 hisat2 \
-  -x /home/reference/grch38/genome \            # HISAT2 genome index location
-  -1 /home/projects/alignment/data/fastq/${SRR}_1.subset.fastq.gz \   # Forward read file
-  -2 /home/projects/alignment/data/fastq/${SRR}_2.subset.fastq.gz \   # Reverse read file
-  -p 8 \                                        # Use 8 CPU threads to speed up alignment
-  | samtools sort -o /home/projects/alignment/data/bam/${SRR}.bam 
+  -x /home/reference/grch38/genome \
+  -1 /home/projects/alignment/data/fastq/${SRR}_1.subset.fastq.gz \
+  -2 /home/projects/alignment/data/fastq/${SRR}_2.subset.fastq.gz \
+  -p 8 \
+| samtools sort -o /home/projects/alignment/data/bam/${SRR}.bam
 
-# 4-4. Create BAM index file
+# 4-3. Create BAM index file
 samtools index /home/projects/alignment/data/bam/${SRR}.bam
 
 # Read sample names from the first column of SraRunTable.csv
