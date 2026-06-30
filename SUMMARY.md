@@ -78,7 +78,7 @@
 * [Introduction to RNA-seq Analysis Part 1: Conda & Jupyter setup](workshops/introduction-to-rna-seq-analysis-part-1-conda-and-jupyter-setup/README.md)
   * [Part 2: DESeq2: Differentially expressed genes identification](workshops/introduction-to-rna-seq-analysis-part-1-conda-and-jupyter-setup/part-2-deseq2-differentially-expressed-genes-identification.md)
   * [Part 3: Visualization](workshops/introduction-to-rna-seq-analysis-part-1-conda-and-jupyter-setup/part-3-visualization.md)
-* [Introduction to sequence alignment](workshops/introduction-to-sequence-alignment.md)
+* [Introduction to Sequence Alignment](workshops/introduction-to-sequence-alignment.md)
 
 ## Useful Links
 
