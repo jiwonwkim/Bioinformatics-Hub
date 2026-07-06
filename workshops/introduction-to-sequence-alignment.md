@@ -3,11 +3,25 @@ description: 14 Jul 2026
 icon: '2'
 ---
 
-# Introduction to sequence alignment
+# Introduction to Sequence Alignment
 
 ## Welcome to the Bioinformatics Hub workshop!&#x20;
 
 Today, we will learn how to align raw RNA-seq reads to a reference genome and quantify gene expression levels.
+
+## What is sequence alignment?
+
+When RNA is sequenced, the resulting reads are stored in **FASTQ** files as short sequences of nucleotides (A, C, G and T/U). However, these files do not indicate where each read originated in the genome.
+
+To determine the origin of each read, we compare the sequences against a **reference genome** using a sequence alignment (or **mapping**) program. The aligner identifies the most likely genomic location for each read, allowing us to determine which gene it came from.
+
+Sequence alignment is a fundamental step in RNA-seq analysis because it enables us to count how many reads map to each gene. These gene-level counts are then used to estimate gene expression levels and identify genes that are differentially expressed between experimental conditions.
+
+For this workshop, we will analyse a publicly available RNA-seq dataset comparing **TGF-β-treated** and **untreated human trabecular meshwork cells**. If you would like to learn more about the dataset, please refer to the original publication:
+
+{% embed url="https://www.mdpi.com/2218-273X/12/11/1693" %}
+
+
 
 Before we begin, we need several files required for the analysis. Some files are small, while others can be quite large.
 
@@ -104,20 +118,6 @@ The files will be downloaded directly into Google Colab during the tutorial.
 * DESeq2 (differential expression)
 * EnhancedVolcano (visualisation)
 * ggplot2 / patchwork (plotting)
-
-
-
-## What is sequence alignment?
-
-When RNA is sequenced, the resulting reads are stored in **FASTQ** files as short sequences of nucleotides (A, C, G and T/U). However, these files do not indicate where each read originated in the genome.
-
-To determine the origin of each read, we compare the sequences against a **reference genome** using a sequence alignment (or **mapping**) program. The aligner identifies the most likely genomic location for each read, allowing us to determine which gene it came from.
-
-Sequence alignment is a fundamental step in RNA-seq analysis because it enables us to count how many reads map to each gene. These gene-level counts are then used to estimate gene expression levels and identify genes that are differentially expressed between experimental conditions.
-
-For this workshop, we will analyse a publicly available RNA-seq dataset comparing **TGF-β-treated** and **untreated human trabecular meshwork cells**. If you would like to learn more about the dataset, please refer to the original publication:
-
-{% embed url="https://www.mdpi.com/2218-273X/12/11/1693" %}
 
 
 
