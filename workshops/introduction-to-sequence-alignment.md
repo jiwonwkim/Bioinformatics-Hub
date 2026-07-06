@@ -35,15 +35,13 @@ For this workshop, we will analyse a publicly available RNA-seq dataset comparin
 
 
 
-Before we begin, we need several files required for the analysis. Some files are small, while others can be quite large.
+
 
 ### Required files
 
-Let's start by looking into the files we need today.
+Before we begin, we need several files required for the analysis.&#x20;
 
-
-
-First, let's look at the input files we will use today:
+Let's look at the input files we will use today:
 
 #### **1. Paired-end raw sequencing reads (FASTQ files)**
 
@@ -125,7 +123,7 @@ The files will be downloaded directly into Google Colab during the tutorial.
 ### Software used
 
 * HISAT2 (alignment)
-* SAMtools (BAM processing)
+* SAMtools (SAM/BAM processing)
 * featureCounts (gene quantification)
 * DESeq2 (differential expression)
 * EnhancedVolcano (visualisation)
@@ -139,7 +137,7 @@ Let's begin the RNA-seq analysis workflow.&#x20;
 
 Go to Google Colab.
 
-[https://colab.research.google.com/](https://colab.research.google.com/)
+{% embed url="https://colab.research.google.com/" %}
 
 Open a new Google Colab notebook:
 
@@ -159,6 +157,8 @@ A cell can be one of two types:
 * **Text cell**
   * Contains explanations, titles, and notes
   * Used to document the workflow and describe each step
+
+
 
 ### I. Analysis Setup
 
