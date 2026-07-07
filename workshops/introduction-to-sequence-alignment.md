@@ -13,6 +13,8 @@ Today, we will learn how to align raw RNA-seq reads to a reference genome and qu
 
 When RNA is sequenced, the resulting reads are stored in **FASTQ** files as short sequences of nucleotides (A, C, G and T/U). However, these files do not indicate where each read originated in the genome.
 
+{% file src="../.gitbook/assets/example.fastq" %}
+
 To determine the origin of each read, we compare the sequences against a **reference genome** using a sequence alignment (or **mapping**) program. The aligner identifies the most likely genomic location for each read, allowing us to determine which gene it came from.
 
 <figure><img src="../.gitbook/assets/Unaligned.png" alt=""><figcaption><p>Reference and unaligned reads</p></figcaption></figure>
