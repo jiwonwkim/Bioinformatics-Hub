@@ -317,7 +317,6 @@ The loop:
 %%bash
 # 4-2. For all the samples, run alignment (takes about 20 mins)
 while read SRR; do
-echo "Aligning "${SRR}"..."
 hisat2 \
   -x /home/reference/grch38/genome \
   -1 /home/projects/alignment/data/fastq/${SRR}_1.subset.fastq.gz \
@@ -329,12 +328,12 @@ hisat2 \
 samtools index /home/projects/alignment/data/bam/${SRR}.bam
 
 # Read sample names from the first column of SraRunTable.csv
-done < <(cut -d"," -f1 /home/projects/alignment/data/fastq/SraRunTable.csv)
+done < <(cut -d"," -f1 /home/projects/alignment/data/fastq/SraRunTable.csv | tail -n +2)
 ```
 
 ***
 
-## Break!
+## Break
 
 ***
 
