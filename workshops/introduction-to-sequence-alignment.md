@@ -11,15 +11,11 @@ Today, we will learn how to align raw RNA-seq reads to a reference genome and qu
 
 ## What is sequence alignment?
 
-
-
-<figure><img src="../.gitbook/assets/Unaligned.png" alt=""><figcaption><p>Reference and unaligned reads</p></figcaption></figure>
-
-
-
 When RNA is sequenced, the resulting reads are stored in **FASTQ** files as short sequences of nucleotides (A, C, G and T/U). However, these files do not indicate where each read originated in the genome.
 
 To determine the origin of each read, we compare the sequences against a **reference genome** using a sequence alignment (or **mapping**) program. The aligner identifies the most likely genomic location for each read, allowing us to determine which gene it came from.
+
+<figure><img src="../.gitbook/assets/Unaligned.png" alt=""><figcaption><p>Reference and unaligned reads</p></figcaption></figure>
 
 <figure><img src="../.gitbook/assets/Aligned.png" alt=""><figcaption><p>Reads aligned to the reference genome</p></figcaption></figure>
 
@@ -841,3 +837,5 @@ cat("Down-regulated (Control > Treated): ", nrow(sig_down), "\n")
 
 If you would like to apply this workflow to your own research project or need help adapting it to your or public data, don't hesitate to contact the **Bioinformatics Hub** at jiwon.kim@ucl.ac.uk.
 
+We would also appreciate your feedback to help us improve future workshops. Please complete our short anonymous survey:\
+[https://forms.cloud.microsoft/e/W6VWwBNhAA](https://forms.cloud.microsoft/e/W6VWwBNhAA)
