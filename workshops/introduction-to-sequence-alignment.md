@@ -524,7 +524,6 @@ colnames(count_matrix) <- basename(colnames(count_matrix))          # removes th
 # 8-5. Convert to a matrix format required by DESeq2
 count_matrix <- as.matrix(count_matrix)
 print(head(count_matrix))
-print(class(count_matrix))
 ```
 
 
@@ -540,41 +539,45 @@ DESeq2 needs:
 3. Experimental design
    * tells DESeq2 what comparison to perform
 
-<pre class="language-r"><code class="lang-r">%%R
+```r
+%%R
 # Load DESeq2 library
 library(DESeq2)
 
 # 9-1. Load sample metadata table
 # This contains information about each sample,
 # including which group it belongs to
-sample_metadata &#x3C;- read.csv("/home/projects/alignment/data/fastq/SraRunTable.csv", 
+sample_metadata <- read.csv("/home/projects/alignment/data/fastq/SraRunTable.csv", 
                               header = TRUE, 
                               stringsAsFactors = TRUE)
 
 # 9-2. Match metadata rows with count matrix columns
 # The row names must match sample names exactly
-rownames(sample_metadata) &#x3C;- sample_metadata$Run
+rownames(sample_metadata) <- sample_metadata$Run
 
 # 9-3. Keep only useful metadata columns
 # For example, keeping 'SampleName' and 'SampleGroup' (Treated vs Control)
-sample_metadata &#x3C;- sample_metadata[, c("SampleName", "SampleGroup")]
+sample_metadata <- sample_metadata[, c("SampleName", "SampleGroup")]
 
 # 9-4. Take a look at the formatted metadata
 print(head(sample_metadata))
+```
 
+
+
+```r
+%%R
 # 9-5. Create DESeq2 dataset
 # design = ~ SampleGroup means:
 # compare samples based on their treatment group
-dds &#x3C;- DESeqDataSetFromMatrix(countData = count_matrix,
+dds <- DESeqDataSetFromMatrix(countData = count_matrix,
                               colData = sample_metadata,
                               design = ~ SampleGroup)
 
 # 9-6. Set the control group as the reference
 # Results will be: Treated vs "Control"
-<strong>dds$SampleGroup &#x3C;- relevel(dds$SampleGroup, ref = "Control")
-</strong></code></pre>
-
-
+dds$SampleGroup <- relevel(dds$SampleGroup, ref = "Control")
+```
 
 #### 10. Run Differential Expression Analysis
 
